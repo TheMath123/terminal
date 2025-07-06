@@ -1,0 +1,54 @@
+import type { TerminalLine, CommandContext } from "@/types/terminal"
+
+export const executeCatCommand = async (
+  args: string[],
+  context: CommandContext,
+  fetchFileContent: (path: string) => Promise<string>,
+): Promise<TerminalLine[]> => {
+  const newLines: TerminalLine[] = []
+
+  if (!args[0]) {
+    newLines.push({ type: "error", content: "cat: faltando nome do arquivo" })
+    return newLines
+  }
+
+  const filePath = context.resolvePath(args[0])
+  const parentDir = filePath.substring(0, filePath.lastIndexOf("/")) || "/system"
+
+  if (!context.hasDirectoryAccess(parentDir, context.currentUser)) {
+    newLines.push({ type: "error", content: `cat: ${args[0]}: Permissão negada` })
+    return newLines
+  }
+
+  // Verifica se é um arquivo (não está na lista de diretórios)
+  const fileName = filePath.substring(filePath.lastIndexOf("/") + 1)
+  const parentContents = context.getDefaultDirectoryStructure(parentDir)
+
+  if (!parentContents.includes(fileName)) {
+    newLines.push({ type: "error", content: `cat: ${args[0]}: Arquivo não encontrado` })
+    return newLines
+  }
+
+  // Verifica se não é um diretório
+  const isDirectory =
+    context.getDefaultDirectoryStructure(filePath).length > 0 || context.directoryPermissions[filePath]
+  if (isDirectory) {
+    newLines.push({ type: "error", content: `cat: ${args[0]}: É um diretório` })
+    return newLines
+  }
+
+  try {
+    const content = await fetchFileContent(filePath)
+
+    // Mostra conteúdo limpo, linha por linha
+    const lines = content.split("\n")
+    lines.forEach((line) => {
+      newLines.push({ type: "output", content: line })
+    })
+  } catch (error) {
+    const errorMessage = error instanceof Error ? error.message : "Erro desconhecido"
+    newLines.push({ type: "error", content: `cat: ${args[0]}: ${errorMessage}` })
+  }
+
+  return newLines
+}

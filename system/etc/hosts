@@ -1,0 +1,5 @@
+127.0.0.1	localhost
+127.0.1.1	terminal-web
+192.168.1.1	gateway
+8.8.8.8		dns-google
+::1		localhost ip6-localhost ip6-loopback

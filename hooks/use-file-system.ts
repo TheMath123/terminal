@@ -1,0 +1,112 @@
+"use client"
+
+import { useMemo } from "react"
+import type { DirectoryPermissions, FileSystemStructure } from "@/types/terminal"
+
+export const useFileSystem = () => {
+  const directoryPermissions: DirectoryPermissions = useMemo(
+    () => ({
+      "/system": { allowedUsers: ["user", "admin", "root", "guest"] },
+      "/system/home": { allowedUsers: ["user", "admin", "root", "guest"] },
+      "/system/home/user": { allowedUsers: ["user", "admin", "root"] },
+      "/system/home/admin": { allowedUsers: ["admin", "root"] },
+      "/system/home/admin/secrets": {
+        allowedUsers: ["admin", "root"],
+        requiresPassword: true,
+        password: "secret123",
+        description: "Diretório com informações confidenciais",
+      },
+      "/system/home/guest": { allowedUsers: ["user", "admin", "root", "guest"] },
+      "/system/etc": { allowedUsers: ["admin", "root"] },
+      "/system/var": { allowedUsers: ["admin", "root"] },
+      "/system/var/log": { allowedUsers: ["admin", "root"] },
+      "/system/var/www": { allowedUsers: ["user", "admin", "root"] },
+      "/system/root": { allowedUsers: ["root"] },
+    }),
+    [],
+  )
+
+  const fileSystemStructure: FileSystemStructure = useMemo(
+    () => ({
+      "/system": ["home", "etc", "var", "root"],
+      "/system/home": ["user", "admin", "guest"],
+      "/system/home/user": ["README.md", "documents"],
+      "/system/home/user/documents": ["projeto.txt", "notas.md"],
+      "/system/home/admin": ["config.conf", "secrets"],
+      "/system/home/admin/secrets": ["passwords.txt"],
+      "/system/home/guest": ["welcome.txt"],
+      "/system/etc": ["passwd", "hosts"],
+      "/system/var": ["log", "www"],
+      "/system/var/log": ["system.log"],
+      "/system/var/www": ["index.html"],
+      "/system/root": ["admin-notes.txt"],
+    }),
+    [],
+  )
+
+  const fileMapping = useMemo(
+    () => ({
+      "/system/home/user/README.md": "/system/home/user/README.md",
+      "/system/home/user/documents/projeto.txt": "/system/home/user/documents/projeto.txt",
+      "/system/home/user/documents/notas.md": "/system/home/user/documents/notas.md",
+      "/system/home/admin/config.conf": "/system/home/admin/config.conf",
+      "/system/home/admin/secrets/passwords.txt": "/system/home/admin/secrets/passwords.txt",
+      "/system/home/guest/welcome.txt": "/system/home/guest/welcome.txt",
+      "/system/etc/passwd": "/system/etc/passwd",
+      "/system/etc/hosts": "/system/etc/hosts",
+      "/system/var/log/system.log": "/system/var/log/system.log",
+      "/system/var/www/index.html": "/system/var/www/index.html",
+      "/system/root/admin-notes.txt": "/system/root/admin-notes.txt",
+    }),
+    [],
+  )
+
+  const hasDirectoryAccess = (path: string, user: string): boolean => {
+    const permissions = directoryPermissions[path]
+    if (!permissions) {
+      const parentPath = path.substring(0, path.lastIndexOf("/")) || "/system"
+      if (parentPath === path) return false
+      return hasDirectoryAccess(parentPath, user)
+    }
+    return permissions.allowedUsers.includes(user)
+  }
+
+  const getDefaultDirectoryStructure = (path: string): string[] => {
+    return fileSystemStructure[path] || []
+  }
+
+  const fetchFileContent = async (filePath: string): Promise<string> => {
+    const mappedPath = fileMapping[filePath as keyof typeof fileMapping]
+    if (!mappedPath) {
+      throw new Error(`Arquivo não encontrado no mapeamento: ${filePath}`)
+    }
+
+    try {
+      const response = await fetch(mappedPath, {
+        method: "GET",
+        headers: {
+          Accept: "text/plain",
+        },
+      })
+
+      if (!response.ok) {
+        throw new Error(`HTTP ${response.status}: ${response.statusText}`)
+      }
+
+      const content = await response.text()
+      return content
+    } catch (error) {
+      console.error(`Erro ao buscar arquivo ${filePath}:`, error)
+      throw new Error(`Não foi possível ler o arquivo: ${error instanceof Error ? error.message : "Erro desconhecido"}`)
+    }
+  }
+
+  return {
+    directoryPermissions,
+    fileSystemStructure,
+    fileMapping,
+    hasDirectoryAccess,
+    getDefaultDirectoryStructure,
+    fetchFileContent,
+  }
+}

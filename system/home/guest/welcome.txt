@@ -1,0 +1,9 @@
+Bem-vindo, visitante!
+
+Esta é uma conta de convidado com acesso limitado.
+Você pode:
+- Ler arquivos públicos
+- Navegar em diretórios permitidos
+- Usar comandos básicos
+
+Para mais funcionalidades, solicite uma conta de usuário.

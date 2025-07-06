@@ -1,0 +1,21 @@
+# Notas do Administrador ROOT
+
+Sistema configurado e funcionando com arquivos reais.
+
+## Configurações importantes:
+- Firewall ativo
+- Logs habilitados
+- Backup automático
+- Monitoramento de acesso
+
+## Tarefas pendentes:
+- Revisar permissões de usuários
+- Atualizar senhas
+- Verificar logs de segurança
+- Implementar 2FA
+
+## Comandos úteis:
+- systemctl status
+- tail -f /system/var/log/system.log
+- ufw status
+- ps aux
