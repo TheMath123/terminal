@@ -1,0 +1,4 @@
+Este é um arquivo de teste.
+Linha 2 do arquivo.
+Linha 3 com alguns caracteres especiais: áéíóú
+Linha 4 final.

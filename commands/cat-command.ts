@@ -15,12 +15,13 @@ export const executeCatCommand = async (
   const filePath = context.resolvePath(args[0])
   const parentDir = filePath.substring(0, filePath.lastIndexOf("/")) || "/system"
 
+  // Verifica permissões do diretório
   if (!context.hasDirectoryAccess(parentDir, context.currentUser)) {
     newLines.push({ type: "error", content: `cat: ${args[0]}: Permissão negada` })
     return newLines
   }
 
-  // Verifica se é um arquivo (não está na lista de diretórios)
+  // Verifica se o arquivo existe na estrutura
   const fileName = filePath.substring(filePath.lastIndexOf("/") + 1)
   const parentContents = context.getDefaultDirectoryStructure(parentDir)
 
@@ -40,8 +41,9 @@ export const executeCatCommand = async (
   try {
     const content = await fetchFileContent(filePath)
 
-    // Mostra conteúdo limpo, linha por linha
+    // Simplesmente divide por \n e exibe cada linha
     const lines = content.split("\n")
+
     lines.forEach((line) => {
       newLines.push({ type: "output", content: line })
     })

@@ -30,7 +30,7 @@ export const useFileSystem = () => {
     () => ({
       "/system": ["home", "etc", "var", "root"],
       "/system/home": ["user", "admin", "guest"],
-      "/system/home/user": ["README.md", "documents"],
+      "/system/home/user": ["README.md", "documents", "test.txt"],
       "/system/home/user/documents": ["projeto.txt", "notas.md"],
       "/system/home/admin": ["config.conf", "secrets"],
       "/system/home/admin/secrets": ["passwords.txt"],
@@ -76,28 +76,38 @@ export const useFileSystem = () => {
   }
 
   const fetchFileContent = async (filePath: string): Promise<string> => {
-    const mappedPath = fileMapping[filePath as keyof typeof fileMapping]
-    if (!mappedPath) {
-      throw new Error(`Arquivo não encontrado no mapeamento: ${filePath}`)
-    }
-
     try {
-      const response = await fetch(mappedPath, {
-        method: "GET",
-        headers: {
-          Accept: "text/plain",
-        },
-      })
-
-      if (!response.ok) {
-        throw new Error(`HTTP ${response.status}: ${response.statusText}`)
+      // Mapeamento direto dos caminhos virtuais para os arquivos reais
+      const pathMappings: { [key: string]: string } = {
+        "/system/home/user/README.md": "/system/home/user/README.md",
+        "/system/home/user/documents/projeto.txt": "/system/home/user/documents/projeto.txt",
+        "/system/home/user/documents/notas.md": "/system/home/user/documents/notas.md",
+        "/system/home/admin/config.conf": "/system/home/admin/config.conf",
+        "/system/home/admin/secrets/passwords.txt": "/system/home/admin/secrets/passwords.txt",
+        "/system/home/guest/welcome.txt": "/system/home/guest/welcome.txt",
+        "/system/etc/passwd": "/system/etc/passwd",
+        "/system/etc/hosts": "/system/etc/hosts",
+        "/system/var/log/system.log": "/system/var/log/system.log",
+        "/system/var/www/index.html": "/system/var/www/index.html",
+        "/system/root/admin-notes.txt": "/system/root/admin-notes.txt",
+        "/system/home/user/test.txt": "/system/home/user/test.txt",
       }
 
-      const content = await response.text()
-      return content
+      const mappedPath = pathMappings[filePath]
+      if (!mappedPath) {
+        throw new Error(`Arquivo não encontrado: ${filePath}`)
+      }
+
+      const response = await fetch(mappedPath)
+
+      if (!response.ok) {
+        throw new Error(`Erro HTTP ${response.status}`)
+      }
+
+      // Retorna o conteúdo exatamente como está no arquivo
+      return await response.text()
     } catch (error) {
-      console.error(`Erro ao buscar arquivo ${filePath}:`, error)
-      throw new Error(`Não foi possível ler o arquivo: ${error instanceof Error ? error.message : "Erro desconhecido"}`)
+      throw new Error(`Erro ao ler arquivo: ${error instanceof Error ? error.message : "Erro desconhecido"}`)
     }
   }
 
