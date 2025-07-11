@@ -20,7 +20,7 @@ import { useCallback, useEffect, useMemo, useRef, useState } from "react"
 
 export default function Component() {
   const [lines, setLines] = useState<TerminalLine[]>([
-    { type: "output", content: "Terminal Web v2.0.0 - Sistema de Arquivos Real" },
+    { type: "output", content: "Heimdall v2.0.0 - Os olhos que veem o invisível" },
     { type: "output", content: 'Digite "help" para ver os comandos disponíveis.' },
     { type: "output", content: "" },
   ])
@@ -217,24 +217,24 @@ export default function Component() {
 
           case "neofetch":
             commandResult = [
-              { type: "output", content: "                   -`                    " + currentUser + "@terminal-web" },
+              { type: "output", content: "                   -`                    " + currentUser + "@heimdall" },
               { type: "output", content: "                  .o+`                   ─────────────────────" },
-              { type: "output", content: "                 `ooo/                   OS: Web Terminal 2.0" },
+              { type: "output", content: "                 `ooo/                   OS: Heimdall 2.0.0" },
               { type: "output", content: "                `+oooo:                  Host: Browser Engine" },
-              { type: "output", content: "               `+oooooo:                 Kernel: JavaScript V8" },
+              { type: "output", content: "               `+oooooo:                 Kernel: Archcraft I" },
               {
                 type: "output",
                 content: "               -+oooooo+:                Uptime: " + Math.floor(Math.random() * 100) + " min",
               },
-              { type: "output", content: "             `/:-:++oooo+:               Shell: WebShell 2.0" },
+              { type: "output", content: "             `/:-:++oooo+:               Shell: VoicesInMyMind 1.2.3" },
               { type: "output", content: "            `/++++/+++++++:              Terminal: terminal-web" },
-              { type: "output", content: "           `/++++++++++++++:             CPU: Browser Thread" },
+              { type: "output", content: "           `/++++++++++++++:             CPU: Snapcat Gen 8" },
               {
                 type: "output",
                 content:
                   "          `/+++ooooooooo+++/`            Memory: " +
                   Math.floor(Math.random() * 1000) +
-                  "MB / 2048MB",
+                  "MB / 12TB",
               },
               {
                 type: "output",
@@ -247,7 +247,7 @@ export default function Component() {
               { type: "output", content: "        .oossssso-````/ossssss+`         Theme: Matrix Green" },
               { type: "output", content: "       -osssssso.      :ssssssso.        User: " + currentUser },
               { type: "output", content: "      :osssssss/        osssso+++.       Path: " + currentPath },
-              { type: "output", content: "     /ossssssss/        +ssssooo/-       FileSystem: Real Files" },
+              { type: "output", content: "     /ossssssss/        +ssssooo/-       FileSystem: Borabora Files" },
             ]
             break
 
