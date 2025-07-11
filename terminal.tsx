@@ -1,22 +1,22 @@
 "use client"
 
-import type React from "react"
-import { useState, useRef, useEffect, useCallback, useMemo } from "react"
-import { Input } from "@/components/ui/input"
-import { useUsers } from "@/hooks/use-users"
-import { useFileSystem } from "@/hooks/use-file-system"
-import { createPathResolver } from "@/utils/path-resolver"
+import {
+  executeCalcCommand,
+  executeDateCommand,
+  executeEchoCommand,
+  executeHelpCommand,
+  executePwdCommand,
+  executeWhoamiCommand,
+} from "@/commands/basic-commands"
 import { executeCatCommand } from "@/commands/cat-command"
 import { executeLsCommand } from "@/commands/ls-command"
-import {
-  executeHelpCommand,
-  executeEchoCommand,
-  executeWhoamiCommand,
-  executeDateCommand,
-  executePwdCommand,
-  executeCalcCommand,
-} from "@/commands/basic-commands"
-import type { TerminalLine, CommandContext } from "@/types/terminal"
+import { Input } from "@/components/ui/input"
+import { useFileSystem } from "@/hooks/use-file-system"
+import { useUsers } from "@/hooks/use-users"
+import type { CommandContext, TerminalLine } from "@/types/terminal"
+import { createPathResolver } from "@/utils/path-resolver"
+import type React from "react"
+import { useCallback, useEffect, useMemo, useRef, useState } from "react"
 
 export default function Component() {
   const [lines, setLines] = useState<TerminalLine[]>([
@@ -362,7 +362,7 @@ export default function Component() {
       </div>
 
       <div className="flex items-center">
-        <span className={`${promptColor} mr-2`}>
+        <span className={`${promptColor} mr-2 text-nowrap`}>
           {currentUser}@terminal-web:{displayPath}
           {prompt}
         </span>
@@ -372,7 +372,7 @@ export default function Component() {
           onChange={(e) => setCurrentInput(e.target.value)}
           onKeyDown={handleKeyDown}
           type={awaitingPassword || awaitingDirPassword ? "password" : "text"}
-          className="bg-transparent border-none text-green-400 font-mono focus:ring-0 focus:outline-none focus-visible:ring-0 focus-visible:ring-offset-0 p-0 h-auto shadow-none"
+          className="bg-transparent border-none text-white font-mono focus:ring-0 focus:outline-none focus-visible:ring-0 focus-visible:ring-offset-0 p-0 h-auto shadow-none"
           placeholder={
             awaitingPassword
               ? "Digite a senha do usuário..."
@@ -383,10 +383,6 @@ export default function Component() {
           autoComplete="off"
           spellCheck={false}
         />
-      </div>
-
-      <div className="mt-2 text-xs text-green-600 opacity-70">
-        Sistema de Arquivos Real | Use ↑/↓ para histórico | Usuário: {currentUser} | Pasta: {displayPath}
       </div>
     </div>
   )
