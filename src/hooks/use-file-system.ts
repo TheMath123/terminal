@@ -1,7 +1,8 @@
 "use client"
 
-import { useMemo } from "react"
+import { fetchFile } from "@/action/fetch-file"
 import type { DirectoryPermissions, FileSystemStructure } from "@/types/terminal"
+import { useMemo } from "react"
 
 export const useFileSystem = () => {
   const directoryPermissions: DirectoryPermissions = useMemo(
@@ -95,19 +96,22 @@ export const useFileSystem = () => {
 
       const mappedPath = pathMappings[filePath]
       if (!mappedPath) {
-        throw new Error(`Arquivo não encontrado: ${filePath}`)
+        throw new Error(`Not found file: ${filePath}`)
       }
 
-      const response = await fetch(mappedPath)
+      const response = await fetchFile(mappedPath)
 
       if (!response.ok) {
-        throw new Error(`Erro HTTP ${response.status}`)
+        throw new Error(response.error || 'Shiitt! Problem loading content file, sorry =(')
       }
 
-      // Retorna o conteúdo exatamente como está no arquivo
-      return await response.text()
+      if (!response.content) {
+        throw new Error('Content is empty, sorry =(')
+      }
+
+      return response.content
     } catch (error) {
-      throw new Error(`Erro ao ler arquivo: ${error instanceof Error ? error.message : "Erro desconhecido"}`)
+      throw new Error(`ERROR to read file: ${error instanceof Error ? error.message : "Unknown error"}`)
     }
   }
 

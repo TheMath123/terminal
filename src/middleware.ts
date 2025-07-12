@@ -1,21 +1,24 @@
 import { NextRequest, NextResponse } from 'next/server';
  
-// This function can be marked `async` if using `await` inside
 export function middleware(request: NextRequest) {
-  console.log('============');
-  console.log(request);
-  console.log('============');
+  const authorizationToken = request.headers.get('authorization')
+  const tokenParts = authorizationToken ? authorizationToken.split(' ') : []
+  if (
+    tokenParts.length !== 2 ||
+    tokenParts[0] !== 'Bearer' ||
+    !tokenParts[1] ||
+    tokenParts[1].trim().length === 0 ||
+    tokenParts[1].trim() !== process.env.BEARER_TOKEN
+  ) {
+    console.log('Unauthorized access attempt to /system');
+    console.log('Token content: ', authorizationToken);
+    return NextResponse.redirect(new URL('/', request.url));
+  }
+
+  console.log('Authorized access to /system');
   return NextResponse.next()
 }
  
 export const config = {
-  matcher: [
-    {
-      source: '/system/:path',
-      locale: false,
-      has: [
-        { type: 'header', key: 'Authorization', value: 'Bearer Token' },
-      ],
-    }
-  ]
+  matcher: '/system/:path*'
 }
