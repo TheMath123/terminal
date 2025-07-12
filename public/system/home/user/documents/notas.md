@@ -16,7 +16,7 @@
 - Sincronização com GitHub
 \`\`\`
 
-```plaintext file="system/home/admin/config.conf"
+\`\`\`plaintext file="system/home/admin/config.conf"
 # Configuração do Sistema
 server_port=8080
 debug_mode=true

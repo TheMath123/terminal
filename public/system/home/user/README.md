@@ -18,7 +18,7 @@ Este terminal agora usa arquivos físicos reais!
 Você pode editar os arquivos na pasta /system do projeto.
 \`\`\`
 
-```plaintext file="system/home/user/documents/projeto.txt"
+\`\`\`plaintext file="system/home/user/documents/projeto.txt"
 Projeto Terminal Web
 
 Este é um projeto de terminal simulado que agora usa arquivos reais!
