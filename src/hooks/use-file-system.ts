@@ -102,7 +102,8 @@ export const useFileSystem = () => {
       const response = await fetchFile(mappedPath)
 
       if (!response.ok) {
-        console.error('Error fetching file:', response.error)
+        console.error(response)
+        console.error(response.error)
         throw new Error(response.error || 'Shiitt! Problem loading content file, sorry =(')
       }
 
@@ -112,7 +113,7 @@ export const useFileSystem = () => {
 
       return response.content
     } catch (error) {
-        console.error('Error fetching file:', error)
+        console.error( error)
       throw new Error(`${error instanceof Error ? error.message : "Unknown error"}`)
     }
   }

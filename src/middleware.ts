@@ -11,12 +11,12 @@ export function middleware(request: NextRequest) {
     tokenParts[1].trim().length === 0 ||
     tokenParts[1].trim() !== env.BEARER_TOKEN
   ) {
-    console.log('Unauthorized access attempt to /system');
-    console.log('Token content: ', authorizationToken);
+    console.error('Unauthorized access attempt to /system');
+    console.error('Token content: ', authorizationToken);
     return NextResponse.redirect(new URL('/', request.url));
   }
 
-  console.log('Authorized access to /system');
+  console.info('Authorized access to /system');
   return NextResponse.next()
 }
  

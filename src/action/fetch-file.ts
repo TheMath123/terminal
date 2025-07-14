@@ -25,7 +25,7 @@ export async function fetchFile(mappedPath: string):Promise<ResponseData> {
       content: content,
     }
   } catch (error) {
-    console.log('Error fetching file:', error);
+    console.error(error);
     return {
       ok: false,
       error: 'File is unattainable, sorry =(',
