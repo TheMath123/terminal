@@ -1,20 +1,22 @@
 'use server'
 
+import { env } from "@/env";
+
 interface ResponseData {
   ok: boolean;
   content?: string;
   error?: string;  
 }
 
-const apiUrl =
- process.env.VERCEL === '1' ? `https://${process.env.VERCEL_URL}` : `http://${process.env.VERCEL_URL}`;
+const apiUrl = env.VERCEL === '1' ? `https://${env.VERCEL_URL}` : `http://${env.VERCEL_URL}`;
 
 export async function fetchFile(mappedPath: string):Promise<ResponseData> {
   try {
+    console.log(apiUrl);
     const result = await fetch(apiUrl + '/'+mappedPath, {
       method: 'GET',
       headers: {
-        'Authorization': `Bearer ${process.env.BEARER_TOKEN}`,
+        'Authorization': `Bearer ${env.BEARER_TOKEN}`,
       }
     })
     const content = await result.text()

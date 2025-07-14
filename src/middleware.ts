@@ -1,4 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server';
+import { env } from './env';
  
 export function middleware(request: NextRequest) {
   const authorizationToken = request.headers.get('authorization')
@@ -8,7 +9,7 @@ export function middleware(request: NextRequest) {
     tokenParts[0] !== 'Bearer' ||
     !tokenParts[1] ||
     tokenParts[1].trim().length === 0 ||
-    tokenParts[1].trim() !== process.env.BEARER_TOKEN
+    tokenParts[1].trim() !== env.BEARER_TOKEN
   ) {
     console.log('Unauthorized access attempt to /system');
     console.log('Token content: ', authorizationToken);
