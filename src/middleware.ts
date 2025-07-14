@@ -3,6 +3,8 @@ import { env } from './env';
  
 export function middleware(request: NextRequest) {
   const authorizationToken = request.headers.get('authorization')
+  console.log(request)
+  console.info('Authorization token:', authorizationToken);
   const tokenParts = authorizationToken ? authorizationToken.split(' ') : []
   if (
     tokenParts.length !== 2 ||
