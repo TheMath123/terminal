@@ -8,13 +8,15 @@ interface ResponseData {
   error?: string;  
 }
 
-const apiUrl = env.VERCEL === '1' ? `https://${env.VERCEL_URL}` : `http://${env.VERCEL_URL}`;
+const apiUrl = env.APP_URL
 
 export async function fetchFile(mappedPath: string):Promise<ResponseData> {
   try {
     console.log(apiUrl);
-    const result = await fetch(apiUrl + '/'+mappedPath, {
-      method: 'GET',
+    const path = apiUrl + mappedPath
+    console.log(path);
+    console.log(env.BEARER_TOKEN);
+    const result = await fetch(path , {
       headers: {
         'Authorization': `Bearer ${env.BEARER_TOKEN}`,
       }
