@@ -1,5 +1,6 @@
 export interface TerminalLine {
-  type: "command" | "output" | "error" | "input"
+  type: "command" | "output" | "error" | "input" | "media"
+  extension?: string
   content: string
   timestamp?: Date
 }

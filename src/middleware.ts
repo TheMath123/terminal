@@ -1,7 +1,8 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { env } from './env';
+import { env } from 'process';
  
-export function middleware(request: NextRequest) {
+export async function middleware(request: NextRequest) {
+  // Auth with fake bearer token
   const authorizationToken = request.headers.get('authorization')
   console.log(request)
   console.info('Authorization token:', authorizationToken);

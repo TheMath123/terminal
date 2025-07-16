@@ -1,7 +1,7 @@
 "use client"
 
-import { useMemo } from "react"
 import type { User } from "@/types/terminal"
+import { useMemo } from "react"
 
 export const useUsers = () => {
   const users: { [key: string]: User } = useMemo(
@@ -21,6 +21,7 @@ export const useUsers = () => {
           "cd",
           "mkdir",
           "cat",
+          "play",
           "neofetch",
           "su",
           "find",

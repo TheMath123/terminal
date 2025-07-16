@@ -10,6 +10,8 @@ import {
 } from "@/commands/basic-commands"
 import { executeCatCommand } from "@/commands/cat-command"
 import { executeLsCommand } from "@/commands/ls-command"
+import { executePlayCommand } from "@/commands/play-command"
+import { CustomAudioPlayer } from "@/components/custom-audio-player"
 import { Input } from "@/components/ui/input"
 import { useFileSystem } from "@/hooks/use-file-system"
 import { useUsers } from "@/hooks/use-users"
@@ -153,6 +155,10 @@ export default function Component() {
 
           case "cat":
             commandResult = await executeCatCommand(args, commandContext, fetchFileContent)
+            break
+          
+          case "play":
+            commandResult = await executePlayCommand(args, commandContext)
             break
 
           case "cd":
@@ -343,22 +349,19 @@ export default function Component() {
         ref={terminalRef}
         className="h-[calc(100vh-8rem)] overflow-y-auto mb-4 scrollbar-thin scrollbar-thumb-green-600 scrollbar-track-gray-800"
       >
-        {lines.map((line, index) => (
-          <div
-            key={index}
-            className={`mb-1 whitespace-pre-wrap ${
-              line.type === "command"
-                ? line.content.startsWith("#")
-                  ? "text-red-300"
-                  : "text-green-300"
-                : line.type === "error"
-                  ? "text-red-400"
-                  : "text-green-400"
-            }`}
-          >
-            {line.content}
-          </div>
-        ))}
+     {lines.map((line, index) => (
+  <div key={index} className="whitespace-pre-wrap font-mono">
+    {line.type === "output" && <span>{line.content}</span>}
+    {line.type === "error" && <span className="text-red-500">{line.content}</span>}
+    {line.type === "media" && (
+      line.extension === ".mp3" ? (
+         <CustomAudioPlayer src={line.content} />
+      ) : (
+        <video controls src={line.content} className="my-2 w-full max-h-60" />
+      )
+    )}
+  </div>
+))}
       </div>
 
       <div className="flex items-center">
