@@ -1,0 +1,75 @@
+{
+  "$schema": "./node_modules/@biomejs/biome/configuration_schema.json",
+  "vcs": {
+    "enabled": true,
+    "clientKind": "git",
+    "useIgnoreFile": true
+  },
+  "formatter": {
+    "indentStyle": "space",
+    "indentWidth": 2,
+    "lineWidth": 80,
+    "lineEnding": "crlf"
+  },
+  "javascript": {
+    "formatter": {
+      "quoteStyle": "single"
+    }
+  },
+  "linter": {
+    "enabled": true,
+    "rules": {
+      "recommended": true,
+      "a11y": {
+        "useFocusableInteractive": "off",
+        "noSvgWithoutTitle": "off",
+        "noAutofocus": "off",
+        "useKeyWithClickEvents": "off",
+        "useSemanticElements": "off",
+        "useAriaPropsForRole": "off"
+      },
+      "nursery": {
+        "useSortedClasses": "off",
+        "useUniqueElementIds": "off",
+        "noNestedComponentDefinitions": "off"
+      },
+      "suspicious": {
+        "noArrayIndexKey": "off",
+        "noExplicitAny": "off",
+        "noShadowRestrictedNames": "off",
+        "noAssignInExpressions": "off",
+        "noDocumentCookie": "off"
+      },
+      "correctness": {
+        "useHookAtTopLevel": "off",
+        "noUnusedImports": "warn",
+        "useExhaustiveDependencies": "off",
+        "useJsxKeyInIterable": "off",
+        "noChildrenProp": "off",
+        "noSelfAssign": "off"
+      },
+      "complexity": {
+        "noStaticOnlyClass": "off",
+        "noUselessFragments": "off",
+        "noForEach": "off"
+      },
+      "style": {
+        "useNodejsImportProtocol": "off",
+        "noNonNullAssertion": "off",
+        "noNamespace": "off",
+        "noParameterAssign": "off"
+      },
+      "security": {
+        "noDangerouslySetInnerHtml": "off"
+      },
+      "performance": {
+        "noAccumulatingSpread": "off",
+        "noDelete": "off",
+        "noDynamicNamespaceImportAccess": "off"
+      }
+    }
+  },
+  "files": {
+    "includes": ["./src/**/*.{ts,tsx,js,jsx}"]
+  }
+}

@@ -7,3 +7,5 @@ Você pode:
 - Usar comandos básicos
 
 Para mais funcionalidades, solicite uma conta de usuário.
+
+Se precisar de ajuda, use o comando `help`.

@@ -1,12 +1,12 @@
-import { NextRequest, NextResponse } from 'next/server';
+import { type NextRequest, NextResponse } from 'next/server';
 import { env } from 'process';
- 
+
 export async function middleware(request: NextRequest) {
   // Auth with fake bearer token
-  const authorizationToken = request.headers.get('authorization')
-  console.log(request)
+  const authorizationToken = request.headers.get('authorization');
+  console.log(request);
   console.info('Authorization token:', authorizationToken);
-  const tokenParts = authorizationToken ? authorizationToken.split(' ') : []
+  const tokenParts = authorizationToken ? authorizationToken.split(' ') : [];
   if (
     tokenParts.length !== 2 ||
     tokenParts[0] !== 'Bearer' ||
@@ -20,9 +20,9 @@ export async function middleware(request: NextRequest) {
   }
 
   console.info('Authorized access to /system');
-  return NextResponse.next()
+  return NextResponse.next();
 }
- 
+
 export const config = {
-  matcher: '/system/:path*'
-}
+  matcher: '/system/:path*',
+};

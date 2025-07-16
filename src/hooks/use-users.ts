@@ -1,117 +1,126 @@
-"use client"
+'use client';
 
-import type { User } from "@/types/terminal"
-import { useMemo } from "react"
+import { useMemo } from 'react';
+import type { User } from '@/types/terminal';
 
 export const useUsers = () => {
   const users: { [key: string]: User } = useMemo(
     () => ({
       user: {
-        name: "user",
+        name: 'user',
         hasPassword: false,
         commands: [
-          "help",
-          "clear",
-          "whoami",
-          "date",
-          "echo",
-          "calc",
-          "pwd",
-          "ls",
-          "cd",
-          "mkdir",
-          "cat",
-          "play",
-          "neofetch",
-          "su",
-          "find",
-          "tree",
+          'help',
+          'clear',
+          'whoami',
+          'date',
+          'echo',
+          'calc',
+          'pwd',
+          'ls',
+          'cd',
+          'mkdir',
+          'cat',
+          'play',
+          'neofetch',
+          'su',
+          'find',
+          'tree',
         ],
         isAdmin: false,
       },
       root: {
-        name: "root",
+        name: 'root',
         hasPassword: true,
-        password: "admin123",
+        password: 'admin123',
         commands: [
-          "help",
-          "clear",
-          "whoami",
-          "date",
-          "echo",
-          "calc",
-          "pwd",
-          "ls",
-          "cd",
-          "mkdir",
-          "cat",
-          "neofetch",
-          "exit",
-          "iptables",
-          "ufw",
-          "systemctl",
-          "netstat",
-          "ps",
-          "top",
-          "df",
-          "free",
-          "useradd",
-          "passwd",
-          "find",
-          "tree",
+          'help',
+          'clear',
+          'whoami',
+          'date',
+          'echo',
+          'calc',
+          'pwd',
+          'ls',
+          'cd',
+          'mkdir',
+          'cat',
+          'neofetch',
+          'exit',
+          'iptables',
+          'ufw',
+          'systemctl',
+          'netstat',
+          'ps',
+          'top',
+          'df',
+          'free',
+          'useradd',
+          'passwd',
+          'find',
+          'tree',
         ],
         isAdmin: true,
       },
       admin: {
-        name: "admin",
+        name: 'admin',
         hasPassword: true,
-        password: "senha123",
+        password: 'senha123',
         commands: [
-          "help",
-          "clear",
-          "whoami",
-          "date",
-          "echo",
-          "calc",
-          "pwd",
-          "ls",
-          "cd",
-          "mkdir",
-          "cat",
-          "neofetch",
-          "exit",
-          "systemctl",
-          "ps",
-          "find",
-          "tree",
+          'help',
+          'clear',
+          'whoami',
+          'date',
+          'echo',
+          'calc',
+          'pwd',
+          'ls',
+          'cd',
+          'mkdir',
+          'cat',
+          'neofetch',
+          'exit',
+          'systemctl',
+          'ps',
+          'find',
+          'tree',
         ],
         isAdmin: true,
       },
       guest: {
-        name: "guest",
+        name: 'guest',
         hasPassword: false,
-        commands: ["help", "clear", "whoami", "date", "echo", "pwd", "ls", "cat"],
+        commands: [
+          'help',
+          'clear',
+          'whoami',
+          'date',
+          'echo',
+          'pwd',
+          'ls',
+          'cat',
+        ],
         isAdmin: false,
       },
     }),
     [],
-  )
+  );
 
-  const getCurrentUser = (currentUser: string) => users[currentUser]
+  const getCurrentUser = (currentUser: string) => users[currentUser];
 
   const getAvailableCommands = (currentUser: string) => {
-    const user = getCurrentUser(currentUser)
-    return user ? user.commands : []
-  }
+    const user = getCurrentUser(currentUser);
+    return user ? user.commands : [];
+  };
 
   const hasCommand = (command: string, currentUser: string) => {
-    return getAvailableCommands(currentUser).includes(command)
-  }
+    return getAvailableCommands(currentUser).includes(command);
+  };
 
   return {
     users,
     getCurrentUser,
     getAvailableCommands,
     hasCommand,
-  }
-}
+  };
+};

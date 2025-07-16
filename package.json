@@ -5,7 +5,8 @@
   "scripts": {
     "build": "next build",
     "dev": "next dev",
-    "lint": "next lint",
+    "lint": "biome check",
+    "lint:fix": "biome check --write ./src",
     "start": "next start"
   },
   "dependencies": {
@@ -60,6 +61,7 @@
     "zod": "^3.24.1"
   },
   "devDependencies": {
+    "@biomejs/biome": "^2.1.1",
     "@types/node": "^22",
     "@types/react": "^19",
     "@types/react-dom": "^19",

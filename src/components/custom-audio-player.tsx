@@ -1,65 +1,226 @@
-'use client'
+'use client';
 
-import { useEffect, useRef, useState } from 'react'
+import type React from 'react';
+
+import { useEffect, useRef, useState } from 'react';
 
 interface CustomAudioPlayerProps {
-  src: string
+  src: string;
+  className?: string;
 }
 
-export function CustomAudioPlayer({ src }: CustomAudioPlayerProps) {
-  const audioRef = useRef<HTMLAudioElement>(null)
-  const [isPlaying, setIsPlaying] = useState(false)
-  const [progress, setProgress] = useState(0)
+export function CustomAudioPlayer({
+  src,
+  className = '',
+}: CustomAudioPlayerProps) {
+  const audioRef = useRef<HTMLAudioElement>(null);
+  const [isPlaying, setIsPlaying] = useState(false);
+  const [currentTime, setCurrentTime] = useState(0);
+  const [duration, setDuration] = useState(0);
+  const [volume, setVolume] = useState(0.7);
+  const [isMuted, setIsMuted] = useState(false);
+  const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
-    const audio = audioRef.current
-    if (!audio) return
+    const audio = audioRef.current;
+    if (!audio) return;
 
-    const updateProgress = () => {
-      if (audio.duration) {
-        setProgress((audio.currentTime / audio.duration) * 100)
-      }
-    }
+    const updateTime = () => setCurrentTime(audio.currentTime);
+    const updateDuration = () => {
+      setDuration(audio.duration);
+      setIsLoading(false);
+    };
+    const handleLoadStart = () => setIsLoading(true);
+    const handleCanPlay = () => setIsLoading(false);
 
-    audio.addEventListener('timeupdate', updateProgress)
+    audio.addEventListener('timeupdate', updateTime);
+    audio.addEventListener('loadedmetadata', updateDuration);
+    audio.addEventListener('ended', () => setIsPlaying(false));
+    audio.addEventListener('loadstart', handleLoadStart);
+    audio.addEventListener('canplay', handleCanPlay);
+
+    // Set initial volume
+    audio.volume = volume;
 
     return () => {
-      audio.removeEventListener('timeupdate', updateProgress)
-    }
-  }, [])
+      audio.removeEventListener('timeupdate', updateTime);
+      audio.removeEventListener('loadedmetadata', updateDuration);
+      audio.removeEventListener('ended', () => setIsPlaying(false));
+      audio.removeEventListener('loadstart', handleLoadStart);
+      audio.removeEventListener('canplay', handleCanPlay);
+    };
+  }, [volume]);
 
   const togglePlay = () => {
-    const audio = audioRef.current
-    if (!audio) return
+    const audio = audioRef.current;
+    if (!audio || isLoading) return;
 
-    if (audio.paused) {
-      audio.play()
-      setIsPlaying(true)
+    if (isPlaying) {
+      audio.pause();
     } else {
-      audio.pause()
-      setIsPlaying(false)
+      audio.play().catch(console.error);
     }
-  }
+    setIsPlaying(!isPlaying);
+  };
+
+  const handleProgressClick = (e: React.MouseEvent<HTMLDivElement>) => {
+    const audio = audioRef.current;
+    if (!audio || !duration) return;
+
+    const rect = e.currentTarget.getBoundingClientRect();
+    const clickX = e.clientX - rect.left;
+    const newTime = (clickX / rect.width) * duration;
+
+    audio.currentTime = newTime;
+    setCurrentTime(newTime);
+  };
+
+  const handleVolumeClick = (e: React.MouseEvent<HTMLDivElement>) => {
+    const rect = e.currentTarget.getBoundingClientRect();
+    const clickX = e.clientX - rect.left;
+    const newVolume = Math.max(0, Math.min(1, clickX / rect.width));
+
+    setVolume(newVolume);
+    setIsMuted(false);
+
+    const audio = audioRef.current;
+    if (audio) {
+      audio.volume = newVolume;
+    }
+  };
+
+  const toggleMute = () => {
+    const audio = audioRef.current;
+    if (!audio) return;
+
+    if (isMuted) {
+      audio.volume = volume;
+      setIsMuted(false);
+    } else {
+      audio.volume = 0;
+      setIsMuted(true);
+    }
+  };
+
+  const formatTime = (time: number) => {
+    if (!time || !isFinite(time)) return '00:00';
+    const minutes = Math.floor(time / 60);
+    const seconds = Math.floor(time % 60);
+    return `${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
+  };
+
+  const getProgressPercentage = () => {
+    if (!duration) return 0;
+    return (currentTime / duration) * 100;
+  };
+
+  const getVolumePercentage = () => {
+    return isMuted ? 0 : volume * 100;
+  };
+
+  const getVolumeIcon = () => {
+    if (isMuted || volume === 0) return '🔇';
+    if (volume < 0.3) return '🔈';
+    if (volume < 0.7) return '🔉';
+    return '🔊';
+  };
+
+  const stringPath = src.split('&').pop()?.split('=').pop() || 'audio.mp3';
+  const userPath = decodeURI(stringPath);
 
   return (
-    <div className="w-full bg-black border border-gray-600 rounded px-4 py-2 font-mono text-white">
-      <audio ref={audioRef} src={src} preload="metadata" />
+    <div
+      className={`mt-2 bg-black border border-green-500 rounded font-mono text-green-400 text-sm ${className}`}
+    >
+      <audio ref={audioRef} src={src} preload="metadata">
+        <track kind="captions" src="" label="No captions available" />
+      </audio>
 
-      <div className="flex items-center gap-3">
-        <button
-          onClick={togglePlay}
-          className="px-2 py-1 border border-gray-500 rounded hover:bg-gray-700 transition"
-        >
-          {isPlaying ? '⏸ Pause' : '▶ Play'}
-        </button>
-
-        <div className="flex-1 h-2 bg-gray-700 rounded overflow-hidden">
-          <div
-            className="h-full bg-green-400 transition-all"
-            style={{ width: `${progress}%` }}
-          />
+      {/* Header */}
+      <div className="px-3 py-1 border-b border-green-500 bg-green-900/20">
+        <div className="flex items-center justify-between">
+          <span className="text-xs">♪ AUDIO PLAYER</span>
+          <span className="text-xs opacity-70">
+            {formatTime(currentTime)} / {formatTime(duration)}
+          </span>
         </div>
       </div>
+
+      {/* Main Controls */}
+      <div className="p-3 space-y-2">
+        {/* Progress Bar */}
+        <div className="space-y-1">
+          <div
+            className="h-2 bg-gray-800 border border-green-600 cursor-pointer relative overflow-hidden w-full p-0"
+            onClick={handleProgressClick}
+            aria-label="Seek audio"
+            tabIndex={0}
+            style={{ appearance: 'none' }}
+            role="button"
+          >
+            <div
+              className="h-full bg-green-500 transition-all duration-100"
+              style={{ width: `${getProgressPercentage()}%` }}
+            />
+            <div className="absolute inset-0 flex items-center justify-center text-xs opacity-50 pointer-events-none select-none">
+              {'█'.repeat(Math.floor(getProgressPercentage() / 5))}
+              {'░'.repeat(20 - Math.floor(getProgressPercentage() / 5))}
+            </div>
+          </div>
+        </div>
+
+        {/* Control Buttons */}
+        <div className="flex items-center justify-between">
+          <div className="flex items-center space-x-2">
+            <button
+              type="button"
+              onClick={togglePlay}
+              disabled={isLoading}
+              className="px-2 py-1 border border-green-500 hover:bg-green-500/20 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+            >
+              {isLoading ? '...' : isPlaying ? '⏸' : '▶'}
+            </button>
+
+            <span className="text-xs opacity-70">
+              {isLoading ? 'Loading...' : isPlaying ? 'Playing' : 'Paused'}
+            </span>
+          </div>
+
+          {/* Volume Control */}
+          <div className="flex items-center space-x-2">
+            <button
+              type="button"
+              onClick={toggleMute}
+              className="text-xs hover:text-green-300 transition-colors"
+            >
+              {getVolumeIcon()}
+            </button>
+
+            <div
+              className="w-16 h-2 bg-gray-800 border border-green-600 cursor-pointer relative"
+              onClick={handleVolumeClick}
+              role="slider"
+              tabIndex={0}
+              aria-valuenow={Math.round(getVolumePercentage())}
+              aria-valuemin={0}
+              aria-valuemax={100}
+              aria-label="Adjust volume"
+            >
+              <div
+                className="h-full bg-green-500 transition-all duration-100"
+                style={{ width: `${getVolumePercentage()}%` }}
+              />
+            </div>
+
+            <span className="text-xs w-8 text-right">
+              {Math.round(getVolumePercentage())}%
+            </span>
+          </div>
+        </div>
+
+        {/* File Info */}
+        <div className="text-xs opacity-50 truncate">📁 {userPath}</div>
+      </div>
     </div>
-  )
+  );
 }
