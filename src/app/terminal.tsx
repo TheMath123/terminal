@@ -1,7 +1,5 @@
 'use client';
 
-import type React from 'react';
-import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import {
   executeCalcCommand,
   executeCatCommand,
@@ -23,6 +21,8 @@ import { useFileSystem } from '@/hooks/use-file-system';
 import { useUsers } from '@/hooks/use-users';
 import type { CommandContext, TerminalLine } from '@/types/terminal';
 import { createPathResolver } from '@/utils/path-resolver';
+import type React from 'react';
+import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 
 export default function Component() {
   const [lines, setLines] = useState<TerminalLine[]>([
@@ -216,17 +216,14 @@ export default function Component() {
             commandResult = await executePlayCommand(args, commandContext);
             break;
 
-          case 'cd': {
-            const result = executeCdCommand(args, commandContext);
-            commandResult = result.lines;
-            if (result.awaitingDirPassword) {
-              setAwaitingDirPassword(result.awaitingDirPassword);
-            }
-            if (result.newPath) {
-              setCurrentPath(result.newPath);
-            }
+          case 'cd':
+            commandResult = executeCdCommand(
+              args,
+              commandContext,
+              setCurrentPath,
+              setAwaitingDirPassword,
+            );
             break;
-          }
 
           case 'su': {
             commandResult = executeSuCommand(

@@ -1,54 +1,53 @@
-// commands/executeCdCommand.ts
 import type { CommandContext, TerminalLine } from '@/types/terminal';
-
-interface CdResult {
-  lines: TerminalLine[];
-  newPath?: string;
-  awaitingDirPassword?: string;
-}
 
 export const executeCdCommand = (
   args: string[],
   context: CommandContext,
-): CdResult => {
+  setCurrentPath: React.Dispatch<React.SetStateAction<string>>,
+  setAwaitingDirPassword: React.Dispatch<React.SetStateAction<string | null>>,
+): TerminalLine[] => {
   const lines: TerminalLine[] = [];
 
-  const newPath = args[0]
+  const targetPath = args[0]
     ? context.resolvePath(args[0])
     : `/system/home/${context.currentUser}`;
-  const dirContents = context.getDefaultDirectoryStructure(newPath);
-  console.log(dirContents);
 
-  // Verifica se existe
-  const filePath = context.resolvePath(args[0]);
-  const isDirectory =
-    context.getDefaultDirectoryStructure(filePath).length > 0 ||
-    context.directoryPermissions[filePath];
-  if (!isDirectory) {
+  const dirContents = context.getDefaultDirectoryStructure(targetPath);
+  if (!dirContents || !Array.isArray(dirContents)) {
     lines.push({
       type: 'error',
       content: `cd: ${args[0] || ''}: Diretório não encontrado`,
     });
-    return { lines };
+    return lines;
   }
 
-  // Verifica permissão
-  if (!context.hasDirectoryAccess(newPath, context.currentUser)) {
+  const isDirectory =
+    dirContents.length > 0 || !!context.directoryPermissions[targetPath];
+  if (!isDirectory) {
+    lines.push({
+      type: 'error',
+      content: `cd: ${args[0]}: Não é um diretório`,
+    });
+    return lines;
+  }
+
+  if (!context.hasDirectoryAccess(targetPath, context.currentUser)) {
     lines.push({ type: 'error', content: `cd: ${args[0]}: Permissão negada` });
-    return { lines };
+    return lines;
   }
 
-  // Protegido com senha
-  const permissions = context.directoryPermissions[newPath];
+  const permissions = context.directoryPermissions[targetPath];
   if (permissions?.requiresPassword) {
     lines.push({
       type: 'output',
-      content: `Diretório protegido: ${permissions.description || newPath}`,
+      content: `Diretório protegido: ${permissions.description || targetPath}`,
     });
     lines.push({ type: 'output', content: 'Digite a senha:' });
-    return { lines, awaitingDirPassword: newPath };
+    setAwaitingDirPassword(targetPath);
+    return lines;
   }
 
   // Sucesso
-  return { lines, newPath };
+  setCurrentPath(targetPath);
+  return lines;
 };
