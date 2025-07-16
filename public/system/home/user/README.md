@@ -1,38 +1,10 @@
-# Terminal Web
+# Reinciando sistema de segurança e habilitando firwewall
 
-Um terminal simulado no navegador que usa arquivos reais.
+Olá, se está lendo isto, provavelmente a coisa ficou bem feia, mas eu posso te ajudar (eu acho), para isso fiz uma sequencia de instrução para reinciar o sistema de segurança e habilitar novamente o firewal do servidor.
 
-## Comandos Disponíveis
-Digite "help" para ver os comandos disponíveis.
+## Instruções
+- [ ] Lembrar de adicionar na minha lista de tarefas, para fazer a instruções do README inicial.
 
-## Navegação
-Use "cd" para navegar entre diretórios.
-Use "ls" para listar arquivos e pastas.
 
-## Usuários
-Use "su [usuario]" para trocar de usuário.
-Usuários disponíveis: user, root, admin, guest
-
-## Sistema de Arquivos
-Este terminal agora usa arquivos físicos reais!
-Você pode editar os arquivos na pasta /system do projeto.
-\`\`\`
-
-\`\`\`plaintext file="system/home/user/documents/projeto.txt"
-Projeto Terminal Web
-
-Este é um projeto de terminal simulado que agora usa arquivos reais!
-
-Funcionalidades:
-- Sistema de usuários
-- Sistema de arquivos REAL
-- Comandos administrativos
-- Navegação entre diretórios
-- Controle de acesso por usuário
-- Arquivos físicos editáveis
-
-Tecnologias:
-- React + TypeScript
-- Next.js
-- Sistema de arquivos do navegador
-- Fetch API para leitura de arquivos
+## Considerações
+- A coxinha e caldo de cana do refeitorio 1, do andar -1, é muito boa, recomendo de mais! 5 estrelas!

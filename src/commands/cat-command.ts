@@ -1,4 +1,5 @@
-import type { TerminalLine, CommandContext } from "@/types/terminal"
+import type { CommandContext, TerminalLine } from "@/types/terminal"
+import path from "path"
 
 export const executeCatCommand = async (
   args: string[],
@@ -35,6 +36,15 @@ export const executeCatCommand = async (
     context.getDefaultDirectoryStructure(filePath).length > 0 || context.directoryPermissions[filePath]
   if (isDirectory) {
     newLines.push({ type: "error", content: `cat: ${args[0]}: É um diretório` })
+    return newLines
+  }
+
+  // Verifica extensão permitida
+  const allowedExtensions = ["", ".md", ".txt"]
+  const fileExt = path.extname(fileName)
+
+  if (!allowedExtensions.includes(fileExt)) {
+    newLines.push({ type: "error", content: `cat: ${args[0]}: Tipo de arquivo não suportado` })
     return newLines
   }
 

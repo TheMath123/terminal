@@ -2,6 +2,7 @@
 
 import { fetchFile } from "@/action/fetch-file"
 import type { DirectoryPermissions, FileSystemStructure } from "@/types/terminal"
+import { generateFileMappings } from "@/utils/generate-file-mappings"
 import { useMemo } from "react"
 
 export const useFileSystem = () => {
@@ -31,8 +32,10 @@ export const useFileSystem = () => {
     () => ({
       "/system": ["home", "etc", "var", "root"],
       "/system/home": ["user", "admin", "guest"],
-      "/system/home/user": ["README.md", "documents", "test.txt"],
-      "/system/home/user/documents": ["projeto.txt", "notas.md"],
+      "/system/home/user": ["README.md", "documents",],
+      "/system/home/user/documents": ["ti"],
+      "/system/home/user/documents/ti": ["musics", "TODO.md"],
+      "/system/home/user/documents/ti/musics": ["sombras_del_terminal.mp3"],
       "/system/home/admin": ["config.conf", "secrets"],
       "/system/home/admin/secrets": ["passwords.txt"],
       "/system/home/guest": ["welcome.txt"],
@@ -45,22 +48,8 @@ export const useFileSystem = () => {
     [],
   )
 
-  const fileMapping = useMemo(
-    () => ({
-      "/system/home/user/README.md": "/system/home/user/README.md",
-      "/system/home/user/documents/projeto.txt": "/system/home/user/documents/projeto.txt",
-      "/system/home/user/documents/notas.md": "/system/home/user/documents/notas.md",
-      "/system/home/admin/config.conf": "/system/home/admin/config.conf",
-      "/system/home/admin/secrets/passwords.txt": "/system/home/admin/secrets/passwords.txt",
-      "/system/home/guest/welcome.txt": "/system/home/guest/welcome.txt",
-      "/system/etc/passwd": "/system/etc/passwd",
-      "/system/etc/hosts": "/system/etc/hosts",
-      "/system/var/log/system.log": "/system/var/log/system.log",
-      "/system/var/www/index.html": "/system/var/www/index.html",
-      "/system/root/admin-notes.txt": "/system/root/admin-notes.txt",
-    }),
-    [],
-  )
+const fileMapping = useMemo(() => generateFileMappings(fileSystemStructure), [fileSystemStructure])
+
 
   const hasDirectoryAccess = (path: string, user: string): boolean => {
     const permissions = directoryPermissions[path]
@@ -78,23 +67,7 @@ export const useFileSystem = () => {
 
   const fetchFileContent = async (filePath: string): Promise<string> => {
     try {
-      // Mapeamento direto dos caminhos virtuais para os arquivos reais
-      const pathMappings: { [key: string]: string } = {
-        "/system/home/user/README.md": "/system/home/user/README.md",
-        "/system/home/user/documents/projeto.txt": "/system/home/user/documents/projeto.txt",
-        "/system/home/user/documents/notas.md": "/system/home/user/documents/notas.md",
-        "/system/home/admin/config.conf": "/system/home/admin/config.conf",
-        "/system/home/admin/secrets/passwords.txt": "/system/home/admin/secrets/passwords.txt",
-        "/system/home/guest/welcome.txt": "/system/home/guest/welcome.txt",
-        "/system/etc/passwd": "/system/etc/passwd",
-        "/system/etc/hosts": "/system/etc/hosts",
-        "/system/var/log/system.log": "/system/var/log/system.log",
-        "/system/var/www/index.html": "/system/var/www/index.html",
-        "/system/root/admin-notes.txt": "/system/root/admin-notes.txt",
-        "/system/home/user/test.txt": "/system/home/user/test.txt",
-      }
-
-      const mappedPath = pathMappings[filePath]
+      const mappedPath = fileMapping[filePath]
       if (!mappedPath) {
         throw new Error(`Not found file: ${filePath}`)
       }
