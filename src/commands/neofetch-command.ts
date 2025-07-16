@@ -7,10 +7,7 @@ export const executeNeofetchCommand = (
   return [
     {
       type: 'output',
-      content:
-        '                   -`                    ' +
-        context.currentUser +
-        '@heimdall',
+      content: `                   -                     ${context.currentUser} @heimdall`,
     },
     {
       type: 'output',
@@ -30,10 +27,7 @@ export const executeNeofetchCommand = (
     },
     {
       type: 'output',
-      content:
-        '               -+oooooo+:                Uptime: ' +
-        Math.floor(Math.random() * 100) +
-        ' min',
+      content: `               -+oooooo+:                Uptime:  ${Math.floor(Math.random() * 100)} min`,
     },
     {
       type: 'output',
@@ -51,18 +45,11 @@ export const executeNeofetchCommand = (
     },
     {
       type: 'output',
-      content:
-        '          `/+++ooooooooo+++/`            Memory: ' +
-        Math.floor(Math.random() * 1000) +
-        'MB / 12TB',
+      content: `          /+++ooooooooo+++/              Memory: ${Math.floor(Math.random() * 1000)} MB / 12TB`,
     },
     {
       type: 'output',
-      content:
-        '         ./ooosssso++osssssso+`          Resolution: ' +
-        window.innerWidth +
-        'x' +
-        window.innerHeight,
+      content: `         ./ooosssso++osssssso+           Resolution: ${window.innerWidth}x${window.innerHeight}`,
     },
     {
       type: 'output',
@@ -70,13 +57,11 @@ export const executeNeofetchCommand = (
     },
     {
       type: 'output',
-      content:
-        '       -osssssso.      :ssssssso.        User: ' + context.currentUser,
+      content: `       -osssssso.      :ssssssso.        User: ${context.currentUser}`,
     },
     {
       type: 'output',
-      content:
-        '      :osssssss/        osssso+++.       Path: ' + context.currentPath,
+      content: `      :osssssss/        osssso+++.       Path: ${context.currentPath}`,
     },
     {
       type: 'output',

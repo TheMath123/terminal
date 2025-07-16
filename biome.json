@@ -38,15 +38,18 @@
         "noExplicitAny": "off",
         "noShadowRestrictedNames": "off",
         "noAssignInExpressions": "off",
+        "noGlobalIsFinite": "off",
         "noDocumentCookie": "off"
       },
       "correctness": {
         "useHookAtTopLevel": "off",
-        "noUnusedImports": "warn",
+        "noUnusedImports": "off",
         "useExhaustiveDependencies": "off",
         "useJsxKeyInIterable": "off",
         "noChildrenProp": "off",
-        "noSelfAssign": "off"
+        "noSelfAssign": "off",
+        "noUnusedVariables": "off",
+        "noUnusedFunctionParameters": "off"
       },
       "complexity": {
         "noStaticOnlyClass": "off",
@@ -60,7 +63,8 @@
         "noParameterAssign": "off"
       },
       "security": {
-        "noDangerouslySetInnerHtml": "off"
+        "noDangerouslySetInnerHtml": "off",
+        "noGlobalEval": "off"
       },
       "performance": {
         "noAccumulatingSpread": "off",

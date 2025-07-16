@@ -16,7 +16,7 @@ export const executeSuCommand = (
     });
     newLines.push({
       type: 'output',
-      content: 'Usuários disponíveis: ' + Object.keys(context.users).join(', '),
+      content: `Usuários disponíveis: ${Object.keys(context.users).join(', ')}`,
     });
     return newLines;
   } else if (context.users[targetUser].hasPassword) {

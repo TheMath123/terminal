@@ -4,12 +4,12 @@ export const createPathResolver = (currentPath: string) => {
       return path;
     }
     if (path.startsWith('/')) {
-      return '/system' + path;
+      return `/system${path}`;
     }
     if (path === '..') {
       const parts = currentPath.split('/').filter((p) => p);
       parts.pop();
-      const newPath = '/' + parts.join('/');
+      const newPath = `/${parts.join('/')}`;
       return newPath === '/' ? '/system' : newPath;
     }
     if (path === '.') {
