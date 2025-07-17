@@ -132,9 +132,7 @@ export function CustomAudioPlayer({
     <div
       className={`mt-2 bg-black border border-green-500 rounded font-mono text-green-400 text-sm ${className}`}
     >
-      <audio ref={audioRef} src={src} preload="metadata">
-        <track kind="captions" src="" label="No captions available" />
-      </audio>
+      <audio ref={audioRef} src={src} preload="metadata" />
 
       {/* Header */}
       <div className="px-3 py-1 border-b border-green-500 bg-green-900/20">

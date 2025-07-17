@@ -26,7 +26,8 @@
         "noAutofocus": "off",
         "useKeyWithClickEvents": "off",
         "useSemanticElements": "off",
-        "useAriaPropsForRole": "off"
+        "useAriaPropsForRole": "off",
+        "useMediaCaption": "off"
       },
       "nursery": {
         "useSortedClasses": "off",

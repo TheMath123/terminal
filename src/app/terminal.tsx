@@ -282,6 +282,43 @@ export default function Component() {
     ],
   );
 
+  const handleAutocomplete = useCallback(
+    (input: string) => {
+      const parts = input.split(' ');
+      const command = parts[0];
+      const currentArg = parts.slice(1).join(' ');
+
+      // Se não há argumentos, nada a completar
+      if (!currentArg) return;
+
+      // Divide o caminho e nome parcial
+      const lastSlash = currentArg.lastIndexOf('/');
+      const basePathInput =
+        lastSlash !== -1 ? currentArg.slice(0, lastSlash + 1) : '';
+      const partialName =
+        lastSlash !== -1 ? currentArg.slice(lastSlash + 1) : currentArg;
+
+      // Resolve o caminho absoluto
+      const resolvedBasePath = resolvePath(basePathInput || '.');
+
+      const entries = getDefaultDirectoryStructure(resolvedBasePath);
+      if (!entries) return;
+
+      const matches = entries.filter((entry) => entry.startsWith(partialName));
+
+      if (matches.length === 1) {
+        const completedPath = basePathInput + matches[0];
+        setCurrentInput(`${command} ${completedPath}`);
+      } else if (matches.length > 1) {
+        setLines((prev) => [
+          ...prev,
+          { type: 'output', content: matches.join('    ') },
+        ]);
+      }
+    },
+    [resolvePath, getDefaultDirectoryStructure, setCurrentInput, setLines],
+  );
+
   const handleKeyDown = useCallback(
     (e: React.KeyboardEvent) => {
       if (e.key === 'Enter') {
@@ -309,6 +346,9 @@ export default function Component() {
             setCurrentInput(commandHistory[newIndex]);
           }
         }
+      } else if (e.key === 'Tab') {
+        e.preventDefault();
+        handleAutocomplete(currentInput);
       }
     },
     [currentInput, executeCommand, commandHistory, historyIndex],
@@ -358,12 +398,15 @@ export default function Component() {
         className="h-[calc(100vh-8rem)] overflow-y-auto mb-4 scrollbar-thin scrollbar-thumb-green-600 scrollbar-track-gray-800"
       >
         {lines.map((line, index) => (
-          <div key={index} className="whitespace-pre-wrap font-mono">
-            {line.type === 'output' && (
-              <span className="mt-2">{line.content}</span>
-            )}
+          <div
+            key={index}
+            className={`whitespace-pre-wrap font-mono ${
+              line.type === 'command' && index !== 0 ? 'mt-4' : ''
+            }`}
+          >
+            {line.type === 'output' && <span>{line.content}</span>}
             {line.type === 'error' && (
-              <span className="text-red-500 mt-2">{line.content}</span>
+              <span className="text-red-500">{line.content}</span>
             )}
             {line.type === 'media' &&
               (line.extension === '.mp3' ? (
@@ -377,6 +420,7 @@ export default function Component() {
                   <track kind="captions" src="" label="No captions" />
                 </video>
               ))}
+            {line.type === 'command' && <span>{line.content}</span>}
           </div>
         ))}
       </div>

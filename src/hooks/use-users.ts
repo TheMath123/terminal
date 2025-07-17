@@ -32,7 +32,7 @@ export const useUsers = () => {
       root: {
         name: 'root',
         hasPassword: true,
-        password: 'admin123',
+        password: '123',
         commands: [
           'help',
           'clear',
@@ -45,6 +45,8 @@ export const useUsers = () => {
           'cd',
           'mkdir',
           'cat',
+          'play',
+          'su',
           'neofetch',
           'exit',
           'iptables',
@@ -65,7 +67,7 @@ export const useUsers = () => {
       admin: {
         name: 'admin',
         hasPassword: true,
-        password: 'senha123',
+        password: '558751418260',
         commands: [
           'help',
           'clear',
@@ -76,6 +78,8 @@ export const useUsers = () => {
           'pwd',
           'ls',
           'cd',
+          'play',
+          'su',
           'mkdir',
           'cat',
           'neofetch',
