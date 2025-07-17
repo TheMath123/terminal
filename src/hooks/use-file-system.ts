@@ -1,5 +1,6 @@
 'use client';
 
+import { useMemo } from 'react';
 import { fetchFile } from '@/action/fetch-file';
 import files from '@/assets/captchas.json';
 import type {
@@ -7,7 +8,6 @@ import type {
   FileSystemStructure,
 } from '@/types/terminal';
 import { generateFileMappings } from '@/utils/generate-file-mappings';
-import { useMemo } from 'react';
 
 export const useFileSystem = () => {
   const directoryPermissions: DirectoryPermissions = useMemo(

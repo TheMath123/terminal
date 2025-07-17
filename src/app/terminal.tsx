@@ -21,6 +21,7 @@ import {
   executePlayCommand,
   executePsCommand,
   executePwdCommand,
+  executeRebootCommand,
   executeSuCommand,
   executeUfwCommand,
   executeUnzipCommand,
@@ -48,6 +49,7 @@ export default function Component() {
     { type: 'output', content: '' },
   ]);
   const [currentInput, setCurrentInput] = useState('');
+  const [reboot, setReboot] = useState(false);
   const [commandHistory, setCommandHistory] = useState<string[]>([]);
   const [historyIndex, setHistoryIndex] = useState(-1);
   const [currentUser, setCurrentUser] = useState('user');
@@ -323,6 +325,14 @@ export default function Component() {
             );
             break;
 
+          case 'reboot':
+            commandResult = executeRebootCommand(
+              args,
+              commandContext,
+              setReboot,
+            );
+            break;
+
           case 'find':
             commandResult = await executeFindCommand(args, commandContext);
             break;
@@ -468,6 +478,11 @@ export default function Component() {
     [currentPath, currentUser],
   );
 
+  if (reboot) {
+    <div className="min-h-screen bg-black text-green-400 font-mono text-sm p-4">
+      Reiniciando....
+    </div>;
+  }
   return (
     <div className="min-h-screen bg-black text-green-400 font-mono text-sm p-4">
       <div

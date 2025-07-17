@@ -14,6 +14,7 @@ export * from './neofetch-command';
 export * from './play-command';
 export * from './ps-command';
 export * from './pwd-command';
+export * from './reboot-command';
 export * from './su-command';
 export * from './ufw-command';
 export * from './unzip-command';
