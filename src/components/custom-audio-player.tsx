@@ -21,6 +21,10 @@ export function CustomAudioPlayer({
   const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
+    setTimeout(() => {}, 4000);
+  });
+
+  useEffect(() => {
     const audio = audioRef.current;
     if (!audio) return;
 
@@ -31,7 +35,7 @@ export function CustomAudioPlayer({
     const updateDuration = () => {
       const dur = audio.duration;
       if (isFinite(dur) && dur > 0) {
-        setDuration(dur);
+        setDuration(Math.floor(dur));
         setIsLoading(false);
       }
     };
@@ -39,7 +43,7 @@ export function CustomAudioPlayer({
     // Polling para verificar a duração em casos onde eventos não disparam
     const checkDuration = () => {
       if (audio.duration && isFinite(audio.duration) && audio.duration > 0) {
-        setDuration(audio.duration);
+        setDuration(Math.floor(audio.duration));
         setIsLoading(false);
       }
     };
@@ -202,7 +206,6 @@ export function CustomAudioPlayer({
             />
             <div className="absolute inset-0 flex items-center justify-center text-xs opacity-50 pointer-events-none select-none">
               {'█'.repeat(Math.floor(getProgressPercentage() / 5))}
-              {'░'.repeat(20 - Math.floor(getProgressPercentage() / 5))}
             </div>
           </div>
         </div>
