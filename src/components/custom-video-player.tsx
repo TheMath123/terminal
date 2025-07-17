@@ -172,7 +172,7 @@ export function CustomVideoPlayer({
 
   return (
     <div
-      className={`mt-2 bg-black border border-green-500 rounded font-mono text-green-400 text-sm ${className}`}
+      className={`mt-2 bg-black border border-green-500 rounded font-mono text-green-400 text-sm max-w-[500px] w-full ${className}`}
     >
       {/* Header */}
       <div className="px-3 py-1 border-b border-green-500 bg-green-900/20">

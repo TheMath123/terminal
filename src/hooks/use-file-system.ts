@@ -12,23 +12,23 @@ import { useMemo } from 'react';
 export const useFileSystem = () => {
   const directoryPermissions: DirectoryPermissions = useMemo(
     () => ({
-      '/system': { allowedUsers: ['user', 'admin', 'root', 'guest'] },
-      '/system/home': { allowedUsers: ['user', 'admin', 'root', 'guest'] },
+      '/system': { allowedUsers: ['user', 'admin', 'root'] },
+      '/system/home': { allowedUsers: ['user', 'admin', 'root'] },
       '/system/home/user': { allowedUsers: ['user', 'admin', 'root'] },
       '/system/home/admin': { allowedUsers: ['admin', 'root'] },
-      // '/system/home/admin/secrets': {
-      //   allowedUsers: ['root'],
-      //   requiresPassword: true,
-      //   password: 'secret123',
-      //   description: 'Diretório com informações confidenciais',
-      // },
+      '/system/home/admin/bin/bash': {
+        allowedUsers: ['admin', 'root'],
+        requiresPassword: true,
+        password: 'uva',
+        description: 'Diretório com informações confidenciais',
+      },
       '/system/home/guest': {
-        allowedUsers: ['user', 'admin', 'root', 'guest'],
+        allowedUsers: ['user', 'admin', 'root'],
       },
       '/system/etc': { allowedUsers: ['admin', 'root'] },
       '/system/var': { allowedUsers: ['admin', 'root'] },
       '/system/var/log': { allowedUsers: ['admin', 'root'] },
-      '/system/var/www': { allowedUsers: ['user', 'admin', 'root'] },
+      '/system/var/www': { allowedUsers: ['admin', 'root'] },
       '/system/root': { allowedUsers: ['root'] },
     }),
     [],
@@ -37,7 +37,7 @@ export const useFileSystem = () => {
   const fileSystemStructure: FileSystemStructure = useMemo(
     () => ({
       '/system': ['home', 'etc', 'var', 'root'],
-      '/system/home': ['user', 'admin', 'guest'],
+      '/system/home': ['user', 'admin'],
       '/system/home/user': ['README.md', 'documents'],
       '/system/home/user/documents': ['ti'],
       '/system/home/user/documents/ti': [
@@ -49,7 +49,7 @@ export const useFileSystem = () => {
 
       '/system/home/admin': ['documents', 'images', 'videos'],
       '/system/home/admin/bin/bash': ['secrets.zip'],
-      '/system/home/admin/documents': [],
+      '/system/home/admin/documents': ['jessica.doc'],
       '/system/home/admin/images': ['porn', 'orgia4andar.jpg'],
       '/system/home/admin/images/porn': ['heavy'],
       '/system/home/admin/images/porn/heavy': ['tem-certeza?'],

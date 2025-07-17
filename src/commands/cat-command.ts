@@ -1,9 +1,10 @@
-import path from 'path';
 import type { CommandContext, TerminalLine } from '@/types/terminal';
+import path from 'path';
 
 const allowedExtensions = [
   '',
   '.md',
+  '.doc',
   '.txt',
   '.html',
   '.json',
