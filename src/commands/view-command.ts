@@ -1,60 +1,74 @@
-// commands/executeViewCommand.ts
+import path from 'path';
+import { fetchFileUrl } from '@/action/fetch-file-url';
 import type {
   CommandContext,
   MediaExtension,
   TerminalLine,
 } from '@/types/terminal';
 
-export const executeViewCommand = (
+export const allowedImageExtensions = [
+  '.jpg',
+  '.jpeg',
+  '.png',
+  '.webp',
+  '.gif',
+];
+
+export const executeViewCommand = async (
   args: string[],
   context: CommandContext,
-): TerminalLine[] => {
+): Promise<TerminalLine[]> => {
   const lines: TerminalLine[] = [];
 
-  const fileName = args[0];
-
-  if (!fileName) {
+  if (!args[0]) {
     lines.push({
       type: 'error',
-      content: 'view: Caminho do arquivo é obrigatório',
+      content: 'view: faltando nome do arquivo',
     });
     return lines;
   }
 
-  const resolvedPath = context.resolvePath(fileName);
+  const filePath = context.resolvePath(args[0]);
+  const parentDir =
+    filePath.substring(0, filePath.lastIndexOf('/')) || '/system';
+  const fileName = path.basename(filePath);
+  const ext = path.extname(fileName).toLowerCase();
 
-  const parentPath = resolvedPath.split('/').slice(0, -1).join('/') || '/';
-  const entries = context.getDefaultDirectoryStructure(parentPath);
-  const fileNameOnly = resolvedPath.split('/').pop();
-
-  const exists = entries?.includes(fileNameOnly || '');
-
-  if (!exists) {
+  if (!allowedImageExtensions.includes(ext)) {
     lines.push({
       type: 'error',
-      content: `view: Arquivo "${fileName}" não encontrado`,
+      content: `view: ${args[0]}: formato não suportado`,
     });
     return lines;
   }
 
-  const validExtensions = ['.jpg', '.jpeg', '.png', '.webp'];
-  const extension = validExtensions.find((ext) =>
-    resolvedPath.toLowerCase().endsWith(ext),
-  );
-
-  if (!extension) {
+  if (!context.hasDirectoryAccess(parentDir, context.currentUser)) {
     lines.push({
       type: 'error',
-      content: `view: "${fileName}" não é um formato de imagem suportado`,
+      content: `view: ${args[0]}: Permissão negada`,
     });
     return lines;
   }
 
-  lines.push({
-    type: 'media',
-    content: `/system${resolvedPath}`,
-    extension: extension as MediaExtension,
-  });
+  const parentContents = context.getDefaultDirectoryStructure(parentDir);
+  if (!parentContents.includes(fileName)) {
+    lines.push({
+      type: 'error',
+      content: `view: ${args[0]}: Arquivo não encontrado`,
+    });
+    return lines;
+  }
+
+  try {
+    const url = await fetchFileUrl(filePath);
+    lines.push({
+      type: 'media',
+      content: url,
+      extension: ext as MediaExtension,
+    });
+  } catch (err) {
+    lines.push({ type: 'error', content: `view: erro ao carregar imagem` });
+  }
 
   return lines;
 };

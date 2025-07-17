@@ -5,6 +5,11 @@ const nextConfig = {
       fullUrl: true,
     },
   },
+  images:{
+    remotePatterns: [
+      {hostname: '*'}
+    ]
+  }
 }
 
 export default nextConfig

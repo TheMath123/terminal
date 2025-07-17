@@ -39,8 +39,8 @@ Jul 17 04:05:28 server01 app[1442]: Establishing database connection...
 Jul 17 04:05:29 server01 app[1442]: Connection established
 Jul 17 04:05:30 server01 app[1442]: Unexpected token received, retrying
 Jul 17 04:05:31 server01 app[1442]: Warning: checksum mismatch detected, ignoring packet
-Jul 17 04:05:31 server01 app[1442]: Validation failed
-Jul 17 04:05:31 user app[1443]: Validation token — Ref: [hash]
+Jul 17 04:05:31 server01 app[1442]: Validation failed - Ref: 1337
+Jul 17 04:05:31 user app[1443]: Validation token — Ref: ****
 Jul 17 04:05:32 server01 kernel: [   89.283491] audit: type=1400 audit(1658041532.564:83): apparmor="DENIED" operation="open" profile="snap.firefox.firefox" name="/etc/shadow" pid=1998 comm="firefox" requested_mask="r" denied_mask="r"
 Jul 17 04:06:01 server01 CRON[1654]: (root) CMD (/usr/local/bin/rotate_logs.sh)
 Jul 17 04:06:23 server01 kernel: [   92.492384] usb 1-1: new high-speed USB device number 4 using xhci_hcd
@@ -106,7 +106,7 @@ Jul 17 04:10:40 server01 CRON[3178]: (root) CMD (/opt/internal/bin/cleanse --dee
 Jul 17 04:10:42 server01 app[1442]: Entropy below threshold (0.000018 %). Generation halted.
 Jul 17 04:10:43 server01 audit[3210]: Detected intrusion pattern: code 1337xXx-r00t
 Jul 17 04:10:43 server01 app[1442]: [ALERT] Tamper marker mismatch at sector 91191
-Jul 17 04:10:44 server01 app[1442]: Internal reference checksum failure — Key: [hash]
+Jul 17 04:10:44 server01 app[1337]: Internal reference checksum failure — [hash]
 Jul 17 04:10:45 server01 kernel: [  166.038472] watchdog: BUG: soft lockup - CPU#3 stuck for 22s! [watchdog:1221]
 Jul 17 04:10:46 server01 kernel: [  166.039184] Call Trace:
 Jul 17 04:10:46 server01 kernel: [  166.039672]  dump_stack+0x6d/0x8a

@@ -6,6 +6,8 @@ import type {
   TerminalLine,
 } from '@/types/terminal';
 
+const allowedAudioVideoExtensions = ['.mp3', '.mp4'];
+
 export const executePlayCommand = async (
   args: string[],
   context: CommandContext,
@@ -23,9 +25,7 @@ export const executePlayCommand = async (
   const fileName = path.basename(filePath);
   const ext = path.extname(fileName).toLowerCase();
 
-  const allowedExtensions = ['.mp3', '.mp4'];
-
-  if (!allowedExtensions.includes(ext)) {
+  if (!allowedAudioVideoExtensions.includes(ext)) {
     newLines.push({
       type: 'error',
       content: `play: ${args[0]}: formato não suportado`,

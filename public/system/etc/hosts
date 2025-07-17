@@ -1,5 +1,22 @@
-127.0.0.1	localhost
-127.0.1.1	terminal-web
-192.168.1.1	gateway
-8.8.8.8		dns-google
-::1		localhost ip6-localhost ip6-loopback
+127.0.0.1       localhost
+127.0.1.1       terminal-web
+::1             localhost ip6-localhost ip6-loopback
+192.168.1.1     gateway
+8.8.8.8         dns-google-primary
+8.8.4.4         dns-google-secondary
+1.1.1.1         dns-cloudflare-primary
+1.0.0.1         dns-cloudflare-secondary
+9.9.9.9         dns-quad9
+149.112.112.112 dns-quad9-secondary
+208.67.222.222  dns-opendns-primary
+208.67.220.220  dns-opendns-secondary
+192.0.2.1       test-env
+198.51.100.1    lab-env
+203.0.113.1     demo-env
+127.0.0.1       api.localhost
+127.0.0.1       app.localhost
+127.0.0.1       auth.localhost
+127.0.0.1       db.localhost
+127.0.0.1       internal.localhost
+127.0.0.1       dev.local
+fe80::1         local-link

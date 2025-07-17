@@ -1,4 +1,4 @@
-export type ImageExtension = '.jpg' | '.jpeg' | '.png' | '.webp';
+export type ImageExtension = '.jpg' | '.jpeg' | '.png' | '.webp' | '.gif';
 export type AudioExtension = '.mp3';
 export type VideoExtension = '.mp4';
 export type MediaExtension = VideoExtension | AudioExtension | ImageExtension;

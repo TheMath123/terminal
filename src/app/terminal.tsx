@@ -4,11 +4,14 @@ import Image from 'next/image';
 import type React from 'react';
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import {
+  allowedImageExtensions,
   executeCalcCommand,
   executeCatCommand,
   executeCdCommand,
   executeDateCommand,
+  executeDecodeCommand,
   executeEchoCommand,
+  executeEncodeCommand,
   executeExitCommand,
   executeHelpCommand,
   executeLsCommand,
@@ -216,7 +219,7 @@ export default function Component() {
             break;
 
           case 'view':
-            commandResult = executeViewCommand(args, commandContext);
+            commandResult = await executeViewCommand(args, commandContext);
             break;
 
           case 'play':
@@ -255,6 +258,14 @@ export default function Component() {
 
           case 'neofetch':
             commandResult = executeNeofetchCommand(args, commandContext);
+            break;
+
+          case 'encode':
+            commandResult = executeEncodeCommand(args, commandContext);
+            break;
+
+          case 'decode':
+            commandResult = executeDecodeCommand(args, commandContext);
             break;
 
           default:
@@ -417,8 +428,10 @@ export default function Component() {
             )}
             {line.type === 'media' && (
               <>
-                {['.jpg', '.jpeg', '.png', '.webp'].includes(line.extension) ? (
+                {allowedImageExtensions.includes(line.extension) ? (
                   <Image
+                    width={300}
+                    height={200}
                     src={line.content}
                     alt="imagem"
                     className="w-full max-w-sm rounded-lg my-2 border border-white/10"

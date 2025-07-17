@@ -41,9 +41,19 @@ export const useFileSystem = () => {
       '/system/home/user/documents': ['ti'],
       '/system/home/user/documents/ti': ['musics', 'TODO.md'],
       '/system/home/user/documents/ti/musics': ['sombras_del_terminal.mp3'],
+
       '/system/home/admin': ['documents', 'images', 'videos'],
       '/system/home/admin/documents': [],
-      '/system/home/admin/images': [],
+      '/system/home/admin/images': ['porn', 'orgia4andar.jpg'],
+      '/system/home/admin/images/porn': ['heavy'],
+      '/system/home/admin/images/porn/heavy': ['tem-certeza?'],
+      '/system/home/admin/images/porn/heavy/tem-certeza?': ['ta-bom'],
+      '/system/home/admin/images/porn/heavy/tem-certeza?/ta-bom': [
+        'cat1.gif',
+        'cat2.jpg',
+        'cat3.jpg',
+        'cat4.webp',
+      ],
       '/system/home/admin/videos': [
         'campanha_natal.mp4',
         'estudantes.mp4',
