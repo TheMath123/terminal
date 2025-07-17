@@ -27,16 +27,10 @@ const adminCommands = [
   'systemctl',
   'ps',
   'find',
-  'tree',
   'encode',
   'decode',
   'iptables',
-  'netstat',
-  'top',
-  'df',
-  'free',
-  'useradd',
-  'passwd',
+  'unzip',
 ];
 
 const rootCommands = [...adminCommands, 'ufw', 'reboot'];

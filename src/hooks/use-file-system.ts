@@ -23,6 +23,8 @@ export const useFileSystem = () => {
         description: 'Diretório com informações confidenciais',
       },
       '/system/home/root': { allowedUsers: ['root'] },
+      '/system/home/root/documents': { allowedUsers: ['root'] },
+      '/system/home/root/audio': { allowedUsers: ['root'] },
       '/system/etc': { allowedUsers: ['admin', 'root'] },
       '/system/var': { allowedUsers: ['admin', 'root'] },
       '/system/var/log': { allowedUsers: ['admin', 'root'] },
@@ -33,8 +35,8 @@ export const useFileSystem = () => {
 
   const fileSystemStructure: FileSystemStructure = useMemo(
     () => ({
-      '/system': ['home', 'etc', 'var', 'root'],
-      '/system/home': ['user', 'admin'],
+      '/system': ['home', 'etc', 'var'],
+      '/system/home': ['user', 'admin', 'root'],
       '/system/home/user': ['README.md', 'documents'],
       '/system/home/user/documents': ['ti'],
       '/system/home/user/documents/ti': [
@@ -45,7 +47,7 @@ export const useFileSystem = () => {
       '/system/home/user/documents/ti/musics': ['sombras_del_terminal.mp3'],
 
       '/system/home/admin': ['documents', 'images', 'videos'],
-      '/system/home/admin/bin/bash': ['secrets.zip'],
+      '/system/home/admin/bin/bash': ['key.zip'],
       '/system/home/admin/documents': ['jessica.doc'],
       '/system/home/admin/images': ['porn', 'orgia4andar.jpg'],
       '/system/home/admin/images/porn': ['heavy'],

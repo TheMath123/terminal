@@ -20,6 +20,7 @@ import {
   executePwdCommand,
   executeSuCommand,
   executeUfwCommand,
+  executeUnzipCommand,
   executeViewCommand,
   executeWhoamiCommand,
 } from '@/commands';
@@ -262,6 +263,14 @@ export default function Component() {
               commandContext,
               setCurrentPath,
               setAwaitingDirPassword,
+            );
+            break;
+
+          case 'unzip':
+            commandResult = await executeUnzipCommand(
+              args,
+              commandContext,
+              fetchFileContent,
             );
             break;
 

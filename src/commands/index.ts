@@ -16,5 +16,6 @@ export * from './ps-command';
 export * from './pwd-command';
 export * from './su-command';
 export * from './ufw-command';
+export * from './unzip-command';
 export * from './view-command';
 export * from './whoami-command';
