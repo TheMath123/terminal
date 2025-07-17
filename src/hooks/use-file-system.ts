@@ -22,14 +22,11 @@ export const useFileSystem = () => {
         password: 'f1405b8e61bcea02c60bb1d376b3e57b',
         description: 'Diretório com informações confidenciais',
       },
-      '/system/home/guest': {
-        allowedUsers: ['user', 'admin', 'root'],
-      },
+      '/system/home/root': { allowedUsers: ['root'] },
       '/system/etc': { allowedUsers: ['admin', 'root'] },
       '/system/var': { allowedUsers: ['admin', 'root'] },
       '/system/var/log': { allowedUsers: ['admin', 'root'] },
       '/system/var/www': { allowedUsers: ['admin', 'root'] },
-      '/system/root': { allowedUsers: ['root'] },
     }),
     [],
   );
@@ -66,7 +63,9 @@ export const useFileSystem = () => {
         'o_matador.mp4',
       ],
 
-      '/system/root': ['admin-notes.txt'],
+      '/system/home/root': ['documents', 'audio'],
+      '/system/home/root/documents': ['secrets.zip'],
+      '/system/home/root/audio': ['key.mp3'],
 
       '/system/etc': ['envs', 'hosts', 'passwd'],
       '/system/var': ['log', 'www'],

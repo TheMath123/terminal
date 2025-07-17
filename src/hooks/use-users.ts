@@ -60,7 +60,7 @@ export const useUsers = () => {
       root: {
         name: 'root',
         hasPassword: true,
-        password: 'uva',
+        password: 'lasanha-com-suco-de-laranja',
         commands: rootCommands,
         isAdmin: true,
       },
