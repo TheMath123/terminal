@@ -7,7 +7,7 @@ export const executeUfwCommand = (
 ): TerminalLine[] => {
   const lines: TerminalLine[] = [];
 
-  if (!args[0]) {
+  if (args[0] === 'status') {
     lines.push({
       type: 'output',
       content: `Status: ${context.firewallEnabled ? 'Ativado' : 'Desativado'}`,
@@ -33,6 +33,10 @@ export const executeUfwCommand = (
   lines.push({
     type: 'error',
     content: `ufw: argumento inválido "${args[0]}"`,
+  });
+  lines.push({
+    type: 'error',
+    content: `tenta um como "ufw status" ou "ufw enable"`,
   });
   return lines;
 };

@@ -86,6 +86,7 @@ export default function Component() {
       resolvePath,
       getDefaultDirectoryStructure,
       firewallEnabled,
+      setFirewallEnabled,
     }),
     [
       currentUser,
@@ -96,6 +97,7 @@ export default function Component() {
       resolvePath,
       getDefaultDirectoryStructure,
       firewallEnabled,
+      setFirewallEnabled,
     ],
   );
 
@@ -127,6 +129,27 @@ export default function Component() {
       }
 
       if (awaitingPassword) {
+        if (awaitingPassword === 'firewall') {
+          if (trimmedInput === 'uva') {
+            setFirewallEnabled(true);
+            setLines((prev) => [
+              ...prev,
+              {
+                type: 'output',
+                content:
+                  'Firewall ativado com sucesso. Todas as portas foram bloqueadas.',
+              },
+            ]);
+          } else {
+            setLines((prev) => [
+              ...prev,
+              { type: 'error', content: 'Senha incorreta!' },
+            ]);
+          }
+          setAwaitingPassword(null);
+          return;
+        }
+
         const targetUser = users[awaitingPassword];
         if (targetUser && targetUser.password === trimmedInput) {
           setCurrentUser(awaitingPassword);

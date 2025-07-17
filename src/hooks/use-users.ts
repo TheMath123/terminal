@@ -31,7 +31,6 @@ const adminCommands = [
   'encode',
   'decode',
   'iptables',
-  'ufw',
   'netstat',
   'top',
   'df',
@@ -40,7 +39,7 @@ const adminCommands = [
   'passwd',
 ];
 
-const rootCommands = [...adminCommands];
+const rootCommands = [...adminCommands, 'ufw', 'reboot'];
 
 export const useUsers = () => {
   const users: { [key: string]: User } = useMemo(

@@ -19,7 +19,7 @@ export const useFileSystem = () => {
       '/system/home/admin/bin/bash': {
         allowedUsers: ['admin', 'root'],
         requiresPassword: true,
-        password: 'uva',
+        password: 'f1405b8e61bcea02c60bb1d376b3e57b',
         description: 'Diretório com informações confidenciais',
       },
       '/system/home/guest': {

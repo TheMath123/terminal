@@ -44,4 +44,5 @@ export interface CommandContext {
   resolvePath: (path: string) => string;
   getDefaultDirectoryStructure: (path: string) => string[];
   firewallEnabled: boolean;
+  setFirewallEnabled: (enabled: boolean) => void;
 }
