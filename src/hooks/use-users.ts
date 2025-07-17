@@ -1,7 +1,7 @@
 'use client';
 
-import type { User } from '@/types/terminal';
 import { useMemo } from 'react';
+import type { User } from '@/types/terminal';
 
 const userCommands = [
   'help',

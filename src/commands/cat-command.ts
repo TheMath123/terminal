@@ -1,5 +1,5 @@
-import type { CommandContext, TerminalLine } from '@/types/terminal';
 import path from 'path';
+import type { CommandContext, TerminalLine } from '@/types/terminal';
 
 const allowedExtensions = [
   '',
