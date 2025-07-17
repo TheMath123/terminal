@@ -1,8 +1,5 @@
 'use client';
 
-import Image from 'next/image';
-import type React from 'react';
-import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import {
   allowedImageExtensions,
   executeCalcCommand,
@@ -13,6 +10,7 @@ import {
   executeEchoCommand,
   executeEncodeCommand,
   executeExitCommand,
+  executeFindCommand,
   executeHelpCommand,
   executeIptablesCommand,
   executeLsCommand,
@@ -32,6 +30,9 @@ import { useFileSystem } from '@/hooks/use-file-system';
 import { useUsers } from '@/hooks/use-users';
 import type { CommandContext, TerminalLine } from '@/types/terminal';
 import { createPathResolver } from '@/utils/path-resolver';
+import Image from 'next/image';
+import type React from 'react';
+import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 
 export default function Component() {
   const [lines, setLines] = useState<TerminalLine[]>([
@@ -288,6 +289,10 @@ export default function Component() {
               commandContext,
               setAwaitingPassword,
             );
+            break;
+
+          case 'find':
+            commandResult = await executeFindCommand(args, commandContext);
             break;
 
           default:

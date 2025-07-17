@@ -1,0 +1,73 @@
+# Configurações gerais
+APP_NAME=TerminalWeb
+APP_ENV=production
+APP_DEBUG=false
+APP_PORT=3000
+
+# Banco de dados
+DB_HOST=localhost
+DB_PORT=5432
+DB_USER=admin
+DB_PASSWORD=8cc1f9d2bf7c72dc42d3626296444b18dd996207
+DB_NAME=terminaldb
+DB_SSL=true
+
+# Redis / Cache
+REDIS_HOST=127.0.0.1
+REDIS_PORT=1337
+REDIS_PASSWORD=redispass
+CACHE_TTL=3600
+
+# Auth e JWT
+AUTH_SECRET=supersecretkey
+JWT_EXPIRES_IN=1d
+JWT_ISSUER=terminalweb
+AUTH_PROVIDER=internal
+
+# E-mail
+MAIL_HOST=smtp.mailtrap.io
+MAIL_PORT=2525
+MAIL_USER=9ecdf9c571b481b918db5a4c4593a866
+MAIL_PASSWORD=BuCVVmhPBgv431GjyVyNrG6xztzHYB4g
+MAIL_FROM=noreply@terminalweb.dev
+
+# APIs externas
+WEATHER_API_KEY=fakeweatherapikey
+MAPS_API_KEY=0f03a2f0-7942-4fbd-b77c-be4e4491c813
+PAYMENT_GATEWAY_KEY=2KJDIj0B5J62KlQcNqK2Na+9kCF6Bx2Z
+PAYMENT_GATEWAY_SECRET=0f03a2f0-7942-4fbd-b77c-be4e4491c813
+
+# Monitoramento
+SENTRY_DSN=https://examplePublicKey@o0.ingest.sentry.io/0
+LOG_LEVEL=info
+ENABLE_TRACING=true
+PORT-SECURITY_ENABLED=true
+PORT_SECURITY=1337
+SECURITY_TOKEN=cea02c60bb1
+
+# Serviços internos
+INTERNAL_API_TOKEN=ntHZ61aiCcoATZutSnULo3mjWU7wYce8
+SERVICE_REGISTRY_URL=http://registry.local
+FEATURE_FLAG_NEW_DASHBOARD=true
+USE_LEGACY_ROUTER=false
+
+# Uploads
+UPLOAD_PATH=/var/www/uploads
+MAX_UPLOAD_SIZE_MB=50
+
+# Segurança
+CSP_HEADER=default-src
+X_FRAME_OPTIONS=SAMEORIGIN
+RATE_LIMIT_MAX_REQUESTS=100
+RATE_LIMIT_WINDOW_MS=60000
+
+# Integrações
+DISCORD_WEBHOOK_URL=https://discord.com/api/webhooks/xxx
+SLACK_WEBHOOK_URL=https://hooks.slack.com/services/xxx
+TELEGRAM_BOT_TOKEN=1337:f8dc5bed2ed33de4617c6c6b7d897e23-ntHZ61aiCcoATZutSnULo3mjWU7wYce8-019818e6-031b-7981-b6f5-e7f55f5ed3cb
+
+# Outros
+TIMEZONE=America/Sao_Paulo
+LOCALE=pt-BR
+ENABLE_MAINTENANCE_MODE=false
+RELEASE_TAG=v1.4.7

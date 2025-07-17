@@ -29,7 +29,7 @@ export const executeHelpCommand = (
     'neofetch',
     'su',
     'find',
-    'tree',
+    'exit',
   ];
   const userBasicCommands = availableCommands.filter((cmd) =>
     basicCommands.includes(cmd),
@@ -51,7 +51,6 @@ export const executeHelpCommand = (
     neofetch: '  neofetch      - Mostra informações do sistema',
     su: '  su [usuario]  - Muda para outro usuário',
     find: '  find [nome]   - Busca arquivos e diretórios',
-    tree: '  tree          - Mostra estrutura em árvore',
   };
 
   userBasicCommands.forEach((cmd) => {
@@ -60,19 +59,7 @@ export const executeHelpCommand = (
     }
   });
 
-  const adminCommands = [
-    'exit',
-    'iptables',
-    'ufw',
-    'systemctl',
-    'netstat',
-    'ps',
-    'top',
-    'df',
-    'free',
-    'useradd',
-    'passwd',
-  ];
+  const adminCommands = ['iptables', 'ufw', 'systemctl', 'netstat', 'ps'];
   const userAdminCommands = availableCommands.filter((cmd) =>
     adminCommands.includes(cmd),
   );
@@ -85,14 +72,7 @@ export const executeHelpCommand = (
       exit: '  exit          - Sair do usuário atual',
       iptables: '  iptables      - Gerenciar firewall iptables',
       ufw: '  ufw           - Gerenciar firewall UFW',
-      systemctl: '  systemctl     - Controlar serviços do sistema',
-      netstat: '  netstat       - Mostrar conexões de rede',
       ps: '  ps            - Listar processos',
-      top: '  top           - Monitor de processos',
-      df: '  df            - Mostrar uso do disco',
-      free: '  free          - Mostrar uso da memória',
-      useradd: '  useradd       - Adicionar usuário',
-      passwd: '  passwd        - Alterar senha',
     };
 
     userAdminCommands.forEach((cmd) => {

@@ -1,12 +1,13 @@
 'use client';
 
-import { useMemo } from 'react';
 import { fetchFile } from '@/action/fetch-file';
+import files from '@/assets/captchas.json';
 import type {
   DirectoryPermissions,
   FileSystemStructure,
 } from '@/types/terminal';
 import { generateFileMappings } from '@/utils/generate-file-mappings';
+import { useMemo } from 'react';
 
 export const useFileSystem = () => {
   const directoryPermissions: DirectoryPermissions = useMemo(
@@ -47,6 +48,7 @@ export const useFileSystem = () => {
       '/system/home/user/documents/ti/musics': ['sombras_del_terminal.mp3'],
 
       '/system/home/admin': ['documents', 'images', 'videos'],
+      '/system/home/admin/bin/bash': ['secrets.zip'],
       '/system/home/admin/documents': [],
       '/system/home/admin/images': ['porn', 'orgia4andar.jpg'],
       '/system/home/admin/images/porn': ['heavy'],
@@ -66,10 +68,11 @@ export const useFileSystem = () => {
 
       '/system/root': ['admin-notes.txt'],
 
-      '/system/etc': ['.env', 'hosts', 'passwd'],
+      '/system/etc': ['envs', 'hosts', 'passwd'],
       '/system/var': ['log', 'www'],
       '/system/var/log': ['syslog'],
-      '/system/var/www': ['index.html'],
+      '/system/var/www': ['index.html', 'captchas'],
+      '/system/var/www/captchas': files.captchas,
     }),
     [],
   );

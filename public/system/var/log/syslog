@@ -106,7 +106,7 @@ Jul 17 04:10:40 server01 CRON[3178]: (root) CMD (/opt/internal/bin/cleanse --dee
 Jul 17 04:10:42 server01 app[1442]: Entropy below threshold (0.000018 %). Generation halted.
 Jul 17 04:10:43 server01 audit[3210]: Detected intrusion pattern: code 1337xXx-r00t
 Jul 17 04:10:43 server01 app[1442]: [ALERT] Tamper marker mismatch at sector 91191
-Jul 17 04:10:44 server01 app[1337]: Internal reference checksum failure — [hash]
+Jul 17 04:10:44 server01 app[1337]: Internal reference checksum failure ——sec—— f1405b8e61b
 Jul 17 04:10:45 server01 kernel: [  166.038472] watchdog: BUG: soft lockup - CPU#3 stuck for 22s! [watchdog:1221]
 Jul 17 04:10:46 server01 kernel: [  166.039184] Call Trace:
 Jul 17 04:10:46 server01 kernel: [  166.039672]  dump_stack+0x6d/0x8a

@@ -6,6 +6,7 @@ export * from './decode-command';
 export * from './echo-command';
 export * from './encode-command';
 export * from './exit-command';
+export * from './find-command';
 export * from './help-commands';
 export * from './iptables-command';
 export * from './ls-command';

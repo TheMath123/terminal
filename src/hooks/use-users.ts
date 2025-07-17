@@ -1,7 +1,7 @@
 'use client';
 
-import { useMemo } from 'react';
 import type { User } from '@/types/terminal';
+import { useMemo } from 'react';
 
 const userCommands = [
   'help',
@@ -61,7 +61,7 @@ export const useUsers = () => {
       root: {
         name: 'root',
         hasPassword: true,
-        password: '123',
+        password: 'uva',
         commands: rootCommands,
         isAdmin: true,
       },
