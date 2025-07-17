@@ -1,6 +1,5 @@
 'use client';
 
-import { useMemo } from 'react';
 import { fetchFile } from '@/action/fetch-file';
 import files from '@/assets/captchas.json';
 import type {
@@ -8,6 +7,7 @@ import type {
   FileSystemStructure,
 } from '@/types/terminal';
 import { generateFileMappings } from '@/utils/generate-file-mappings';
+import { useMemo } from 'react';
 
 export const useFileSystem = () => {
   const directoryPermissions: DirectoryPermissions = useMemo(
@@ -46,7 +46,8 @@ export const useFileSystem = () => {
       ],
       '/system/home/user/documents/ti/musics': ['sombras_del_terminal.mp3'],
 
-      '/system/home/admin': ['documents', 'images', 'videos'],
+      '/system/home/admin': ['documents', 'images', 'videos', 'recordings'],
+      '/system/home/admin/recordings': ['record1.mp3'],
       '/system/home/admin/bin/bash': ['key.zip'],
       '/system/home/admin/documents': ['jessica.doc'],
       '/system/home/admin/images': ['porn', 'orgia4andar.jpg'],
