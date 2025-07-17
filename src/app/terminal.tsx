@@ -1,8 +1,5 @@
 'use client';
 
-import Image from 'next/image';
-import type React from 'react';
-import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import {
   allowedImageExtensions,
   executeCalcCommand,
@@ -14,11 +11,14 @@ import {
   executeEncodeCommand,
   executeExitCommand,
   executeHelpCommand,
+  executeIptablesCommand,
   executeLsCommand,
   executeNeofetchCommand,
   executePlayCommand,
+  executePsCommand,
   executePwdCommand,
   executeSuCommand,
+  executeUfwCommand,
   executeViewCommand,
   executeWhoamiCommand,
 } from '@/commands';
@@ -29,6 +29,9 @@ import { useFileSystem } from '@/hooks/use-file-system';
 import { useUsers } from '@/hooks/use-users';
 import type { CommandContext, TerminalLine } from '@/types/terminal';
 import { createPathResolver } from '@/utils/path-resolver';
+import Image from 'next/image';
+import type React from 'react';
+import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 
 export default function Component() {
   const [lines, setLines] = useState<TerminalLine[]>([
@@ -51,6 +54,7 @@ export default function Component() {
   const [awaitingDirPassword, setAwaitingDirPassword] = useState<string | null>(
     null,
   );
+  const [firewallEnabled, setFirewallEnabled] = useState(false);
 
   const inputRef = useRef<HTMLInputElement>(null);
   const terminalRef = useRef<HTMLDivElement>(null);
@@ -80,6 +84,7 @@ export default function Component() {
       hasDirectoryAccess,
       resolvePath,
       getDefaultDirectoryStructure,
+      firewallEnabled,
     }),
     [
       currentUser,
@@ -89,6 +94,7 @@ export default function Component() {
       hasDirectoryAccess,
       resolvePath,
       getDefaultDirectoryStructure,
+      firewallEnabled,
     ],
   );
 
@@ -266,6 +272,22 @@ export default function Component() {
 
           case 'decode':
             commandResult = executeDecodeCommand(args, commandContext);
+            break;
+
+          case 'iptables':
+            commandResult = executeIptablesCommand(args, commandContext);
+            break;
+
+          case 'ps':
+            commandResult = executePsCommand(args, commandContext);
+            break;
+
+          case 'ufw':
+            commandResult = executeUfwCommand(
+              args,
+              commandContext,
+              setAwaitingPassword,
+            );
             break;
 
           default:

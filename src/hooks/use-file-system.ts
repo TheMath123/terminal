@@ -63,12 +63,13 @@ export const useFileSystem = () => {
         'estudantes.mp4',
         'o_matador.mp4',
       ],
-      '/system/home/guest': ['welcome.txt'],
-      '/system/etc': ['passwd', 'hosts'],
+
+      '/system/root': ['admin-notes.txt'],
+
+      '/system/etc': ['.env', 'hosts', 'passwd'],
       '/system/var': ['log', 'www'],
       '/system/var/log': ['syslog'],
       '/system/var/www': ['index.html'],
-      '/system/root': ['admin-notes.txt'],
     }),
     [],
   );

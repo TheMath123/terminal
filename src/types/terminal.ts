@@ -43,4 +43,5 @@ export interface CommandContext {
   hasDirectoryAccess: (path: string, user: string) => boolean;
   resolvePath: (path: string) => string;
   getDefaultDirectoryStructure: (path: string) => string[];
+  firewallEnabled: boolean;
 }
