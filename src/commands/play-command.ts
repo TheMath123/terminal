@@ -1,6 +1,10 @@
 import path from 'path';
 import { fetchFileUrl } from '@/action/fetch-file-url';
-import type { CommandContext, TerminalLine } from '@/types/terminal';
+import type {
+  CommandContext,
+  MediaExtension,
+  TerminalLine,
+} from '@/types/terminal';
 
 export const executePlayCommand = async (
   args: string[],
@@ -51,7 +55,7 @@ export const executePlayCommand = async (
     newLines.push({
       type: 'media',
       content: url,
-      extension: ext,
+      extension: ext as MediaExtension,
     });
   } catch (err) {
     newLines.push({ type: 'error', content: `play: erro ao carregar mídia` });

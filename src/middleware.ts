@@ -1,5 +1,5 @@
 import { type NextRequest, NextResponse } from 'next/server';
-import { env } from 'process';
+import { env } from './env';
 
 export async function middleware(request: NextRequest) {
   // Auth with fake bearer token
