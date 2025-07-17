@@ -1,5 +1,31 @@
-import path from 'path';
 import type { CommandContext, TerminalLine } from '@/types/terminal';
+import path from 'path';
+
+const allowedExtensions = [
+  '',
+  '.md',
+  '.txt',
+  '.html',
+  '.json',
+  '.js',
+  '.ts',
+  '.css',
+  '.xml',
+  '.csv',
+  '.log',
+  '.yaml',
+  '.yml',
+  '.conf',
+  '.ini',
+  '.sh',
+  '.bash',
+  '.py',
+  '.java',
+  '.c',
+  '.cpp',
+  '.h',
+  '.hpp',
+];
 
 export const executeCatCommand = async (
   args: string[],
@@ -51,7 +77,7 @@ export const executeCatCommand = async (
   }
 
   // Verifica extensão permitida
-  const allowedExtensions = ['', '.md', '.txt'];
+
   const fileExt = path.extname(fileName);
 
   if (!allowedExtensions.includes(fileExt)) {

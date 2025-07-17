@@ -1,0 +1,137 @@
+Jul 17 04:03:02 server01 systemd[1]: Starting Daily apt upgrade and clean activities...
+Jul 17 04:03:02 server01 systemd[1]: Started Daily apt upgrade and clean activities.
+Jul 17 04:03:03 server01 kernel: [    0.000000] Initializing cgroup subsys cpuset
+Jul 17 04:03:03 server01 kernel: [    0.000000] Initializing cgroup subsys cpu
+Jul 17 04:03:03 server01 kernel: [    0.000000] Linux version 5.15.0-89-generic (buildd@lcy02-amd64-025)
+Jul 17 04:03:04 server01 kernel: [    0.872434] pci 0000:00:1c.0: BAR 15: assigned [mem 0xc0000000-0xc01fffff]
+Jul 17 04:03:04 server01 kernel: [    1.123234] iwlwifi 0000:01:00.0: loaded firmware version 36.77d01142.0
+Jul 17 04:03:04 server01 kernel: [    1.489234] audit: type=1130 audit(1658041384.456:1): pid=1 uid=0 auid=4294967295 ses=4294967295 msg='unit=systemd-journald comm="systemd" exe="/lib/systemd/systemd"
+Jul 17 04:03:05 server01 systemd[1]: Starting Flush Journal to Persistent Storage...
+Jul 17 04:03:05 server01 systemd-journald[202]: Time spent on flushing to /var/log/journal/xyz: 3.284ms
+Jul 17 04:03:05 server01 systemd[1]: Started Flush Journal to Persistent Storage.
+Jul 17 04:03:06 server01 systemd[1]: Started Network Manager.
+Jul 17 04:03:06 server01 systemd[1]: Starting Update UTMP about System Boot/Shutdown...
+Jul 17 04:03:06 server01 systemd[1]: Started Update UTMP about System Boot/Shutdown.
+Jul 17 04:03:07 server01 dbus-daemon[472]: [system] Successfully activated service 'org.freedesktop.nm_dispatcher'
+Jul 17 04:03:07 server01 systemd[1]: Started Dispatcher daemon for systemd-networkd.
+Jul 17 04:03:08 server01 NetworkManager[562]: <info>  [1626508988.3016] device (wlo1): state change: unmanaged -> unavailable (reason 'managed', sys-iface-state: 'external')
+Jul 17 04:03:09 server01 kernel: [    2.340485] device eth0 entered promiscuous mode
+Jul 17 04:03:10 server01 systemd[1]: Reached target Multi-User System.
+Jul 17 04:03:10 server01 systemd[1]: Started CUPS Scheduler.
+Jul 17 04:03:11 server01 kernel: [    3.231434] EXT4-fs (sda1): mounted filesystem with ordered data mode. Opts: (null)
+Jul 17 04:03:12 server01 systemd[1]: Started LSB: automatic crash report generation.
+Jul 17 04:03:12 server01 systemd[1]: Started LSB: Set the CPU Frequency Scaling governor to "ondemand".
+Jul 17 04:03:13 server01 sshd[614]: Server listening on 0.0.0.0 port 22.
+Jul 17 04:03:13 server01 sshd[614]: Server listening on :: port 22.
+Jul 17 04:03:15 server01 systemd[1]: Started OpenBSD Secure Shell server.
+Jul 17 04:03:20 server01 CRON[982]: (root) CMD (/usr/lib/sa/sa1 1 1)
+Jul 17 04:04:01 server01 CRON[1022]: (root) CMD (/usr/local/bin/daily_cleanup.sh)
+Jul 17 04:04:23 server01 sudo:     root : TTY=pts/0 ; PWD=/home/admin ; USER=root ; COMMAND=/bin/systemctl restart apache2
+Jul 17 04:04:23 server01 systemd[1]: Stopping The Apache HTTP Server...
+Jul 17 04:04:23 server01 systemd[1]: Starting The Apache HTTP Server...
+Jul 17 04:04:24 server01 systemd[1]: Started The Apache HTTP Server.
+Jul 17 04:05:01 server01 CRON[1201]: (root) CMD (cd / && run-parts --report /etc/cron.hourly)
+Jul 17 04:05:23 server01 sshd[1322]: Accepted password for user123 from 192.168.0.12 port 50432 ssh2
+Jul 17 04:05:23 server01 sshd[1322]: pam_unix(sshd:session): session opened for user user123 by (uid=0)
+Jul 17 04:05:27 server01 app[1442]: Running startup sequence...
+Jul 17 04:05:27 server01 app[1442]: Env config loaded: /etc/myapp/config.env
+Jul 17 04:05:28 server01 app[1442]: Establishing database connection...
+Jul 17 04:05:29 server01 app[1442]: Connection established
+Jul 17 04:05:30 server01 app[1442]: Unexpected token received, retrying
+Jul 17 04:05:31 server01 app[1442]: Warning: checksum mismatch detected, ignoring packet
+Jul 17 04:05:31 server01 app[1442]: Validation failed
+Jul 17 04:05:31 user app[1443]: Validation token — Ref: [hash]
+Jul 17 04:05:32 server01 kernel: [   89.283491] audit: type=1400 audit(1658041532.564:83): apparmor="DENIED" operation="open" profile="snap.firefox.firefox" name="/etc/shadow" pid=1998 comm="firefox" requested_mask="r" denied_mask="r"
+Jul 17 04:06:01 server01 CRON[1654]: (root) CMD (/usr/local/bin/rotate_logs.sh)
+Jul 17 04:06:23 server01 kernel: [   92.492384] usb 1-1: new high-speed USB device number 4 using xhci_hcd
+Jul 17 04:06:24 server01 kernel: [   92.593845] usb-storage 1-1:1.0: USB Mass Storage device detected
+Jul 17 04:06:24 server01 kernel: [   92.595947] scsi host6: usb-storage 1-1:1.0
+Jul 17 04:06:25 server01 kernel: [   93.618274] scsi 6:0:0:0: Direct-Access     TOSHIBA  External USB 3.0 0207 PQ: 0 ANSI: 6
+Jul 17 04:06:26 server01 kernel: [   93.719384] sd 6:0:0:0: [sdb] Attached SCSI removable disk
+Jul 17 04:06:31 server01 systemd[1]: Starting Clean the /tmp directory...
+Jul 17 04:06:32 server01 systemd[1]: Started Clean the /tmp directory.
+Jul 17 04:07:01 server01 CRON[1802]: (root) CMD (test -x /usr/sbin/anacron || ( cd / && run-parts --report /etc/cron.daily ))
+Jul 17 04:07:20 server01 kernel: [  101.372839] firewall: IN=eth0 OUT= MAC=00:0c:29:3e:5b:7e SRC=10.0.2.15 DST=239.255.255.250
+Jul 17 04:07:21 server01 kernel: [  101.374202] firewall: IN=eth0 OUT= MAC=00:0c:29:3e:5b:7e SRC=10.0.2.15 DST=224.0.0.251
+Jul 17 04:07:25 server01 app[1442]: Database sync successful
+Jul 17 04:07:26 server01 app[1442]: Scheduled job executed
+Jul 17 04:07:26 server01 app[1442]: Exporting logs to /var/log/myapp/export-0725.log
+Jul 17 04:07:27 server01 app[1442]: Cleanup complete
+Jul 17 04:07:31 server01 sshd[2142]: Disconnected from user user123 192.168.0.12 port 50432
+Jul 17 04:07:31 server01 sshd[2142]: pam_unix(sshd:session): session closed for user user123
+Jul 17 04:07:35 server01 systemd[1]: Stopping User Manager for UID 1001...
+Jul 17 04:07:35 server01 systemd[1]: Stopped User Manager for UID 1001.
+Jul 17 04:07:36 server01 systemd[1]: Removed slice User Slice of UID 1001.
+Jul 17 04:08:01 server01 CRON[2203]: (root) CMD (/usr/bin/apt update -qq && /usr/bin/apt upgrade -y -qq)
+Jul 17 04:08:24 server01 systemd[1]: Starting System Backup...
+Jul 17 04:08:24 server01 systemd[1]: Started System Backup.
+Jul 17 04:08:26 server01 backup[2244]: Backing up /home...
+Jul 17 04:08:27 server01 backup[2244]: Backup completed: 3.2GB in 58s
+Jul 17 04:08:30 server01 logger: Backup finished successfully
+Jul 17 04:08:36 server01 sshd[2301]: Connection closed by 192.168.0.23 port 54401 [preauth]
+Jul 17 04:08:37 server01 sshd[2302]: Failed password for invalid user admin from 192.168.0.23 port 54401 ssh2
+Jul 17 04:08:38 server01 sshd[2302]: error: maximum authentication attempts exceeded for invalid user admin from 192.168.0.23 port 54401 ssh2 [preauth]
+Jul 17 04:08:39 server01 sshd[2302]: Disconnecting: Too many authentication failures
+Jul 17 04:09:01 server01 CRON[2401]: (root) CMD (/usr/local/bin/monitor-disk-usage.sh)
+Jul 17 04:09:27 server01 smartd[2451]: Device: /dev/sda [SAT], SMART Prefailure Attribute: 5 Reallocated_Sector_Ct changed from 100 to 99
+Jul 17 04:09:40 server01 kernel: [  139.394829] systemd[1]: Unmounting /media/usb...
+Jul 17 04:09:41 server01 systemd[1]: Unmounted /media/usb.
+Jul 17 04:10:01 server01 CRON[2521]: (root) CMD (/usr/bin/check-integrity.sh)
+Jul 17 04:10:14 server01 app[1442]: !!! ERROR: dataLengthMismatchException at offset 0xAEF3
+Jul 17 04:10:15 server01 app[1442]: Recovering... CRC32[fail]
+Jul 17 04:10:17 server01 app[1442]: Panic: Unexpected opcode 0xFF12AA3C — restarting module
+Jul 17 04:10:18 server01 systemd[1]: myapp.service: Main process exited, code=exited, status=217/USER
+Jul 17 04:10:18 server01 systemd[1]: myapp.service: Failed with result 'exit-code'.
+Jul 17 04:10:18 server01 systemd[1]: Failed to start Custom App Daemon.
+Jul 17 04:10:23 server01 kernel: [  151.830983] PCIe Bus Error: severity=Uncorrected (Fatal), type=Transaction Layer
+Jul 17 04:10:23 server01 kernel: [  151.830983]   device [8086:10ed] error status/mask=00004000/00002000
+Jul 17 04:10:24 server01 kernel: [  152.103923] RAS: Correctable Errors logged: 4
+Jul 17 04:10:25 server01 app[1442]: Log anomaly detected: zero timestamp → {0.00000000}
+Jul 17 04:10:26 server01 app[1442]: Overlapping memory regions detected: 0xFFF5 - 0xFFF9
+Jul 17 04:10:26 server01 audit[2931]: ANOM_PROMISCUOUS: promiscuous mode enabled for interface wlan0
+Jul 17 04:10:27 server01 audit[2931]: ANOM_ABEND: Process 2931 crashed by signal 6 (SIGABRT)
+Jul 17 04:10:28 server01 sshd[3032]: Invalid user '\x0Froot' from 192.168.0.66 port 63333
+Jul 17 04:10:28 server01 sshd[3032]: input_userauth_request: invalid user '\x0Froot'
+Jul 17 04:10:29 server01 sshd[3032]: Received disconnect from 192.168.0.66 port 63333:11: Bye Bye [preauth]
+Jul 17 04:10:29 server01 sshd[3032]: Disconnected from invalid user '\x0Froot' 192.168.0.66 port 63333
+Jul 17 04:10:33 server01 systemd-coredump[3065]: Process 1442 (myapp) dumped core.
+Jul 17 04:10:33 server01 systemd-coredump[3065]: Stacktrace: 0xffffcfa8f0b3 -> 0xDEADBEEF (corrupted)
+Jul 17 04:10:34 server01 app[1442]: ERROR: Undefined symbol 'ghost_loader::init_null(🌑)'
+Jul 17 04:10:35 server01 app[1442]: Warning: Refusing to decode file with magic 0x7FFFEEEE
+Jul 17 04:10:36 server01 kernel: [  161.983451] audit: type=1337 audit(1626519036.120:404): magic_glitch="xq99837392-∞-🧠" level=🛑
+Jul 17 04:10:37 server01 systemd[1]: Started Virtual Shadow Daemon (vshadowd).
+Jul 17 04:10:38 server01 vshadowd[3152]: WARNING: Found 27 ghost entries in /etc/shadow
+Jul 17 04:10:39 server01 vshadowd[3152]: Patching UID overflow (current: 4294967295)
+Jul 17 04:10:40 server01 CRON[3178]: (root) CMD (/opt/internal/bin/cleanse --deep)
+Jul 17 04:10:42 server01 app[1442]: Entropy below threshold (0.000018 %). Generation halted.
+Jul 17 04:10:43 server01 audit[3210]: Detected intrusion pattern: code 1337xXx-r00t
+Jul 17 04:10:43 server01 app[1442]: [ALERT] Tamper marker mismatch at sector 91191
+Jul 17 04:10:44 server01 app[1442]: Internal reference checksum failure — Key: [hash]
+Jul 17 04:10:45 server01 kernel: [  166.038472] watchdog: BUG: soft lockup - CPU#3 stuck for 22s! [watchdog:1221]
+Jul 17 04:10:46 server01 kernel: [  166.039184] Call Trace:
+Jul 17 04:10:46 server01 kernel: [  166.039672]  dump_stack+0x6d/0x8a
+Jul 17 04:10:46 server01 kernel: [  166.039996]  watchdog_timer_fn+0x1c2/0x230
+Jul 17 04:10:47 server01 kernel: [  166.040314]  ? irq_work_run_list+0x3f/0x70
+Jul 17 04:10:47 server01 kernel: [  166.040497]  __hrtimer_run_queues+0xe9/0x250
+Jul 17 04:10:47 server01 kernel: [  166.040704]  hrtimer_interrupt+0x12a/0x220
+Jul 17 04:10:48 server01 sshd[3291]: Disconnected from user root 10.0.0.5 port 65535
+Jul 17 04:10:49 server01 kernel: [  167.492383] device eth1 left promiscuous mode
+Jul 17 04:10:51 server01 systemd[1]: Starting System Self-Test Daemon...
+Jul 17 04:10:52 server01 selftest[3319]: Anomaly: Received packet with ID -9223372036854775808
+Jul 17 04:10:52 server01 selftest[3319]: Shifting timebase: delta = 4294967295 ms
+Jul 17 04:10:53 server01 selftest[3319]: COMPLETED: 9139 tests passed, 1 failed (code 0xCAFEBABE)
+Jul 17 04:10:54 server01 systemd[1]: Started System Self-Test Daemon.
+Jul 17 04:10:55 server01 CRON[3401]: (root) CMD (python3 /opt/maintenance/rebuild.py --force --extreme)
+Jul 17 04:10:56 server01 rebuild[3402]: ⚠️  Overheating warning: CPU temp 109.4°C
+Jul 17 04:10:57 server01 rebuild[3402]: Chunk ID #666 corrupted (magic=DEAD:BEEF)
+Jul 17 04:10:58 server01 rebuild[3402]: Aborting due to max recursion depth exceeded (∞)
+Jul 17 04:10:59 server01 rebuild[3402]: FATAL: Cannot recover file structure. Fatal entropy.
+Jul 17 04:11:00 server01 systemd[1]: rebuild.service: Main process exited, code=exited, status=99
+Jul 17 04:11:00 server01 systemd[1]: rebuild.service: Failed with result 'exit-code'.
+Jul 17 04:11:01 server01 systemd[1]: Failed to start Extreme Rebuild Engine.
+Jul 17 04:11:03 server01 kernel: [  172.938472] CPU0: Core temperature above threshold, cpu clock throttled
+Jul 17 04:11:04 server01 kernel: [  173.002938] Machine Check Exception: 0x0000000000000001 Bank 4
+Jul 17 04:11:05 server01 logger: 🔥 System unstable — consider immediate intervention
+Jul 17 04:11:06 server01 sudo:     root : TTY=pts/2 ; PWD=/root ; USER=root ; COMMAND=/sbin/panic --yes
+Jul 17 04:11:07 server01 kernel: [  174.000000] Kernel panic - not syncing: Unrecoverable condition encountered
+Jul 17 04:11:08 server01 kernel: [  174.000001] ---[ end Kernel panic - press POWER to restart ]---

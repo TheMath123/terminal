@@ -1,7 +1,5 @@
 'use client';
 
-import type React from 'react';
-import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import {
   executeCalcCommand,
   executeCatCommand,
@@ -15,6 +13,7 @@ import {
   executePlayCommand,
   executePwdCommand,
   executeSuCommand,
+  executeViewCommand,
   executeWhoamiCommand,
 } from '@/commands';
 import { CustomAudioPlayer } from '@/components/custom-audio-player';
@@ -24,6 +23,9 @@ import { useFileSystem } from '@/hooks/use-file-system';
 import { useUsers } from '@/hooks/use-users';
 import type { CommandContext, TerminalLine } from '@/types/terminal';
 import { createPathResolver } from '@/utils/path-resolver';
+import Image from 'next/image';
+import type React from 'react';
+import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 
 export default function Component() {
   const [lines, setLines] = useState<TerminalLine[]>([
@@ -211,6 +213,10 @@ export default function Component() {
               commandContext,
               fetchFileContent,
             );
+            break;
+
+          case 'view':
+            commandResult = executeViewCommand(args, commandContext);
             break;
 
           case 'play':
@@ -409,12 +415,21 @@ export default function Component() {
             {line.type === 'error' && (
               <span className="text-red-500">{line.content}</span>
             )}
-            {line.type === 'media' &&
-              (line.extension === '.mp3' ? (
-                <CustomAudioPlayer src={line.content} />
-              ) : (
-                <CustomVideoPlayer src={line.content} />
-              ))}
+            {line.type === 'media' && (
+              <>
+                {['.jpg', '.jpeg', '.png', '.webp'].includes(line.extension) ? (
+                  <Image
+                    src={line.content}
+                    alt="imagem"
+                    className="w-full max-w-sm rounded-lg my-2 border border-white/10"
+                  />
+                ) : line.extension === '.mp3' ? (
+                  <CustomAudioPlayer src={line.content} />
+                ) : (
+                  <CustomVideoPlayer src={line.content} />
+                )}
+              </>
+            )}
             {line.type === 'command' && <span>{line.content}</span>}
           </div>
         ))}

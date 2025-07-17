@@ -1,12 +1,12 @@
 'use client';
 
-import { useMemo } from 'react';
 import { fetchFile } from '@/action/fetch-file';
 import type {
   DirectoryPermissions,
   FileSystemStructure,
 } from '@/types/terminal';
 import { generateFileMappings } from '@/utils/generate-file-mappings';
+import { useMemo } from 'react';
 
 export const useFileSystem = () => {
   const directoryPermissions: DirectoryPermissions = useMemo(
@@ -52,7 +52,7 @@ export const useFileSystem = () => {
       '/system/home/guest': ['welcome.txt'],
       '/system/etc': ['passwd', 'hosts'],
       '/system/var': ['log', 'www'],
-      '/system/var/log': ['system.log'],
+      '/system/var/log': ['syslog'],
       '/system/var/www': ['index.html'],
       '/system/root': ['admin-notes.txt'],
     }),

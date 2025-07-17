@@ -10,4 +10,5 @@ export * from './neofetch-command';
 export * from './play-command';
 export * from './pwd-command';
 export * from './su-command';
+export * from './view-command';
 export * from './whoami-command';

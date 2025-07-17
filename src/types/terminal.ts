@@ -1,9 +1,17 @@
-export interface TerminalLine {
-  type: 'command' | 'output' | 'error' | 'input' | 'media';
-  extension?: string;
-  content: string;
-  timestamp?: Date;
-}
+export type ImageExtension = '.jpg' | '.jpeg' | '.png' | '.webp';
+export type AudioExtension = '.mp3';
+export type VideoExtension = '.mp4';
+export type MediaExtension = VideoExtension | AudioExtension | ImageExtension;
+
+export type TerminalLine =
+  | { type: 'command'; content: string }
+  | { type: 'output'; content: string }
+  | { type: 'error'; content: string }
+  | {
+      type: 'media';
+      content: string;
+      extension: MediaExtension;
+    };
 
 export interface User {
   name: string;
