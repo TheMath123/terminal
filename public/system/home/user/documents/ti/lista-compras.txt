@@ -1,0 +1,11 @@
+# Lista de compras do TI
+
+- [ ] Leite
+- [ ] Pão
+- [ ] Ovos
+- [ ] Queijo
+- [ ] Frutas
+- [ ] Legumes
+- [ ] QSW-M3216R-8S8T
+- [ ] S6730-H24X6C
+- [ ] DN-RSDV-36-60.60PT
