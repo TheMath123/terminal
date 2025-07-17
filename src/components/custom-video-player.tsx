@@ -229,7 +229,6 @@ export function CustomVideoPlayer({
             />
             <div className="absolute inset-0 flex items-center justify-center text-xs opacity-50 pointer-events-none select-none">
               {'█'.repeat(Math.floor(getProgressPercentage() / 5))}
-              {'░'.repeat(20 - Math.floor(getProgressPercentage() / 5))}
             </div>
           </div>
         </div>

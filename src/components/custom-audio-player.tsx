@@ -24,32 +24,59 @@ export function CustomAudioPlayer({
     const audio = audioRef.current;
     if (!audio) return;
 
-    const updateTime = () => setCurrentTime(audio.currentTime);
-    const updateDuration = () => {
-      setDuration(audio.duration);
-      setIsLoading(false);
+    const updateTime = () => {
+      setCurrentTime(audio.currentTime);
     };
-    const handleLoadStart = () => setIsLoading(true);
-    const handleCanPlay = () => setIsLoading(false);
-    const handleEnded = () => setIsPlaying(false);
 
-    audio.addEventListener('timeupdate', updateTime);
+    const updateDuration = () => {
+      const dur = audio.duration;
+      if (isFinite(dur) && dur > 0) {
+        setDuration(dur);
+        setIsLoading(false);
+      }
+    };
+
+    // Polling para verificar a duração em casos onde eventos não disparam
+    const checkDuration = () => {
+      if (audio.duration && isFinite(audio.duration) && audio.duration > 0) {
+        setDuration(audio.duration);
+        setIsLoading(false);
+      }
+    };
+
+    const handleLoadStart = () => {
+      setIsLoading(true);
+      setDuration(0); // Reseta a duração ao carregar novo áudio
+    };
+
+    const handleEnded = () => {
+      setIsPlaying(false);
+      setCurrentTime(0);
+    };
+
+    // Adiciona múltiplos eventos para capturar a duração
     audio.addEventListener('loadedmetadata', updateDuration);
-    audio.addEventListener('ended', handleEnded);
+    audio.addEventListener('durationchange', updateDuration);
+    audio.addEventListener('canplay', updateDuration);
+    audio.addEventListener('timeupdate', updateTime);
     audio.addEventListener('loadstart', handleLoadStart);
-    audio.addEventListener('canplay', handleCanPlay);
+    audio.addEventListener('ended', handleEnded);
 
-    // Set initial volume
-    audio.volume = volume;
+    // Inicia polling para duração
+    const durationInterval = setInterval(checkDuration, 500);
+
+    audio.volume = isMuted ? 0 : volume;
 
     return () => {
-      audio.removeEventListener('timeupdate', updateTime);
       audio.removeEventListener('loadedmetadata', updateDuration);
-      audio.removeEventListener('ended', handleEnded);
+      audio.removeEventListener('durationchange', updateDuration);
+      audio.removeEventListener('canplay', updateDuration);
+      audio.removeEventListener('timeupdate', updateTime);
       audio.removeEventListener('loadstart', handleLoadStart);
-      audio.removeEventListener('canplay', handleCanPlay);
+      audio.removeEventListener('ended', handleEnded);
+      clearInterval(durationInterval);
     };
-  }, [volume]);
+  }, [isMuted, volume]);
 
   const togglePlay = () => {
     const audio = audioRef.current;
@@ -61,10 +88,11 @@ export function CustomAudioPlayer({
     } else {
       audio
         .play()
-        .then(() => {
-          setIsPlaying(true);
-        })
-        .catch(console.error);
+        .then(() => setIsPlaying(true))
+        .catch((error) => {
+          console.error('Erro ao reproduzir áudio:', error);
+          setIsLoading(false);
+        });
     }
   };
 
@@ -76,27 +104,8 @@ export function CustomAudioPlayer({
     const clickX = e.clientX - rect.left;
     const newTime = (clickX / rect.width) * duration;
 
-    // Pause before seeking to prevent bugs
-    const wasPlaying = isPlaying;
-    if (wasPlaying) {
-      audio.pause();
-      setIsPlaying(false);
-    }
-
     audio.currentTime = newTime;
     setCurrentTime(newTime);
-
-    // Resume playing if it was playing before
-    if (wasPlaying) {
-      setTimeout(() => {
-        audio
-          .play()
-          .then(() => {
-            setIsPlaying(true);
-          })
-          .catch(console.error);
-      }, 100);
-    }
   };
 
   const handleVolumeClick = (e: React.MouseEvent<HTMLDivElement>) => {
@@ -117,25 +126,30 @@ export function CustomAudioPlayer({
     const audio = audioRef.current;
     if (!audio) return;
 
-    if (isMuted) {
-      audio.volume = volume;
-      setIsMuted(false);
-    } else {
-      audio.volume = 0;
-      setIsMuted(true);
-    }
+    setIsMuted((prev) => {
+      audio.volume = prev ? volume : 0;
+      return !prev;
+    });
   };
 
   const formatTime = (time: number) => {
-    if (!time || !isFinite(time)) return '00:00';
-    const minutes = Math.floor(time / 60);
-    const seconds = Math.floor(time % 60);
-    return `${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
+    if (!isFinite(time)) return '00:00';
+
+    const totalSeconds = Math.floor(time);
+    const hours = Math.floor(totalSeconds / 3600);
+    const minutes = Math.floor((totalSeconds % 3600) / 60);
+    const seconds = totalSeconds % 60;
+
+    const pad = (n: number) => n.toString().padStart(2, '0');
+
+    return hours > 0
+      ? `${pad(hours)}:${pad(minutes)}:${pad(seconds)}`
+      : `${pad(minutes)}:${pad(seconds)}`;
   };
 
   const getProgressPercentage = () => {
-    if (!duration) return 0;
-    return (currentTime / duration) * 100;
+    if (!duration || !isFinite(duration)) return 0;
+    return Math.min((currentTime / duration) * 100, 100);
   };
 
   const getVolumePercentage = () => {
@@ -154,7 +168,7 @@ export function CustomAudioPlayer({
 
   return (
     <div
-      className={`mt-2 bg-black border border-green-500 rounded font-mono text-green-400 text-sm ${className}`}
+      className={`mt-2 bg-black border border-green-500 rounded font-mono text-green-400 text-sm max-w-[500px] w-full ${className}`}
     >
       <audio ref={audioRef} src={src} preload="metadata" />
 
@@ -177,7 +191,10 @@ export function CustomAudioPlayer({
             onClick={handleProgressClick}
             aria-label="Seek audio"
             tabIndex={0}
-            role="button"
+            role="slider"
+            aria-valuemin={0}
+            aria-valuemax={Math.round(duration)}
+            aria-valuenow={Math.round(currentTime)}
           >
             <div
               className="h-full bg-green-500 transition-all duration-100"
@@ -197,7 +214,7 @@ export function CustomAudioPlayer({
               type="button"
               onClick={togglePlay}
               disabled={isLoading}
-              className="px-2 py-1 border border-green-500 hover:bg-green-500/20 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+              className="w-7 h-7 border border-green-500 hover:bg-green-500/20 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
             >
               {isLoading ? '...' : isPlaying ? '⏸' : '▶'}
             </button>
@@ -213,6 +230,7 @@ export function CustomAudioPlayer({
               type="button"
               onClick={toggleMute}
               className="text-xs hover:text-green-300 transition-colors"
+              aria-label={isMuted ? 'Unmute' : 'Mute'}
             >
               {getVolumeIcon()}
             </button>
