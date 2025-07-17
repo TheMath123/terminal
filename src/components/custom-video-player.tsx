@@ -1,78 +1,103 @@
 'use client';
 
 import type React from 'react';
-
 import { useEffect, useRef, useState } from 'react';
 
-interface CustomAudioPlayerProps {
+interface CustomVideoPlayerProps {
   src: string;
   className?: string;
 }
 
-export function CustomAudioPlayer({
+export function CustomVideoPlayer({
   src,
   className = '',
-}: CustomAudioPlayerProps) {
-  const audioRef = useRef<HTMLAudioElement>(null);
+}: CustomVideoPlayerProps) {
+  const videoRef = useRef<HTMLVideoElement>(null);
   const [isPlaying, setIsPlaying] = useState(false);
   const [currentTime, setCurrentTime] = useState(0);
   const [duration, setDuration] = useState(0);
   const [volume, setVolume] = useState(0.7);
   const [isMuted, setIsMuted] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
+  const [isFullscreen, setIsFullscreen] = useState(false);
 
   useEffect(() => {
-    const audio = audioRef.current;
-    if (!audio) return;
+    const video = videoRef.current;
+    if (!video) return;
 
-    const updateTime = () => setCurrentTime(audio.currentTime);
+    const updateTime = () => setCurrentTime(video.currentTime);
     const updateDuration = () => {
-      setDuration(audio.duration);
+      setDuration(video.duration);
       setIsLoading(false);
     };
     const handleLoadStart = () => setIsLoading(true);
     const handleCanPlay = () => setIsLoading(false);
+    const handleEnded = () => setIsPlaying(false);
 
-    audio.addEventListener('timeupdate', updateTime);
-    audio.addEventListener('loadedmetadata', updateDuration);
-    audio.addEventListener('ended', () => setIsPlaying(false));
-    audio.addEventListener('loadstart', handleLoadStart);
-    audio.addEventListener('canplay', handleCanPlay);
+    video.addEventListener('timeupdate', updateTime);
+    video.addEventListener('loadedmetadata', updateDuration);
+    video.addEventListener('ended', handleEnded);
+    video.addEventListener('loadstart', handleLoadStart);
+    video.addEventListener('canplay', handleCanPlay);
 
     // Set initial volume
-    audio.volume = volume;
+    video.volume = volume;
 
     return () => {
-      audio.removeEventListener('timeupdate', updateTime);
-      audio.removeEventListener('loadedmetadata', updateDuration);
-      audio.removeEventListener('ended', () => setIsPlaying(false));
-      audio.removeEventListener('loadstart', handleLoadStart);
-      audio.removeEventListener('canplay', handleCanPlay);
+      video.removeEventListener('timeupdate', updateTime);
+      video.removeEventListener('loadedmetadata', updateDuration);
+      video.removeEventListener('ended', handleEnded);
+      video.removeEventListener('loadstart', handleLoadStart);
+      video.removeEventListener('canplay', handleCanPlay);
     };
   }, [volume]);
 
   const togglePlay = () => {
-    const audio = audioRef.current;
-    if (!audio || isLoading) return;
+    const video = videoRef.current;
+    if (!video || isLoading) return;
 
     if (isPlaying) {
-      audio.pause();
+      video.pause();
+      setIsPlaying(false);
     } else {
-      audio.play().catch(console.error);
+      video
+        .play()
+        .then(() => {
+          setIsPlaying(true);
+        })
+        .catch(console.error);
     }
-    setIsPlaying(!isPlaying);
   };
 
   const handleProgressClick = (e: React.MouseEvent<HTMLDivElement>) => {
-    const audio = audioRef.current;
-    if (!audio || !duration) return;
+    const video = videoRef.current;
+    if (!video || !duration || isLoading) return;
 
     const rect = e.currentTarget.getBoundingClientRect();
     const clickX = e.clientX - rect.left;
     const newTime = (clickX / rect.width) * duration;
 
-    audio.currentTime = newTime;
+    // Pause before seeking to prevent bugs
+    const wasPlaying = isPlaying;
+    if (wasPlaying) {
+      video.pause();
+      setIsPlaying(false);
+    }
+
+    video.currentTime = newTime;
     setCurrentTime(newTime);
+
+    // Resume playing if it was playing before
+    if (wasPlaying) {
+      setTimeout(() => {
+        video
+          .play()
+          .then(() => {
+            setIsPlaying(true);
+          })
+          .catch(console.error);
+      }, 100);
+    }
   };
 
   const handleVolumeClick = (e: React.MouseEvent<HTMLDivElement>) => {
@@ -83,22 +108,39 @@ export function CustomAudioPlayer({
     setVolume(newVolume);
     setIsMuted(false);
 
-    const audio = audioRef.current;
-    if (audio) {
-      audio.volume = newVolume;
+    const video = videoRef.current;
+    if (video) {
+      video.volume = newVolume;
     }
   };
 
   const toggleMute = () => {
-    const audio = audioRef.current;
-    if (!audio) return;
+    const video = videoRef.current;
+    if (!video) return;
 
     if (isMuted) {
-      audio.volume = volume;
+      video.volume = volume;
       setIsMuted(false);
     } else {
-      audio.volume = 0;
+      video.volume = 0;
       setIsMuted(true);
+    }
+  };
+
+  const toggleFullscreen = () => {
+    const video = videoRef.current;
+    if (!video) return;
+
+    if (!isFullscreen) {
+      if (video.requestFullscreen) {
+        video.requestFullscreen();
+        setIsFullscreen(true);
+      }
+    } else {
+      if (document.exitFullscreen) {
+        document.exitFullscreen();
+        setIsFullscreen(false);
+      }
     }
   };
 
@@ -125,35 +167,60 @@ export function CustomAudioPlayer({
     return '🔊';
   };
 
-  const stringPath = src.split('&').pop()?.split('=').pop() || 'audio.mp3';
-  const userPath = decodeURI(stringPath);
+  const filePath =
+    decodeURI(src).split('&').pop()?.split('%2F').pop() || 'audio.mp3';
 
   return (
     <div
       className={`mt-2 bg-black border border-green-500 rounded font-mono text-green-400 text-sm ${className}`}
     >
-      <audio ref={audioRef} src={src} preload="metadata" />
-
       {/* Header */}
       <div className="px-3 py-1 border-b border-green-500 bg-green-900/20">
         <div className="flex items-center justify-between">
-          <span className="text-xs">♪ AUDIO PLAYER</span>
+          <span className="text-xs">📺 VIDEO PLAYER</span>
           <span className="text-xs opacity-70">
             {formatTime(currentTime)} / {formatTime(duration)}
           </span>
         </div>
       </div>
 
-      {/* Main Controls */}
+      {/* Video Container */}
+      <div className="relative bg-black">
+        <video
+          ref={videoRef}
+          src={src}
+          preload="metadata"
+          className="w-full max-h-60 bg-black"
+          onClick={togglePlay}
+        />
+
+        {/* Play/Pause Overlay */}
+        {!isPlaying && !isLoading && (
+          <div
+            className="absolute inset-0 flex items-center justify-center bg-black/50 cursor-pointer"
+            onClick={() => togglePlay()}
+          >
+            <div className="text-4xl text-green-400 opacity-80">▶</div>
+          </div>
+        )}
+
+        {/* Loading Overlay */}
+        {isLoading && (
+          <div className="absolute inset-0 flex items-center justify-center bg-black/50">
+            <div className="text-green-400 animate-pulse">Loading...</div>
+          </div>
+        )}
+      </div>
+
+      {/* Controls */}
       <div className="p-3 space-y-2">
         {/* Progress Bar */}
         <div className="space-y-1">
           <div
-            className="h-2 bg-gray-800 border border-green-600 cursor-pointer relative overflow-hidden w-full p-0"
+            className="h-2 bg-gray-800 border border-green-600 cursor-pointer relative overflow-hidden w-full"
             onClick={handleProgressClick}
-            aria-label="Seek audio"
+            aria-label="Seek video"
             tabIndex={0}
-            style={{ appearance: 'none' }}
             role="button"
           >
             <div
@@ -184,8 +251,8 @@ export function CustomAudioPlayer({
             </span>
           </div>
 
-          {/* Volume Control */}
           <div className="flex items-center space-x-2">
+            {/* Volume Control */}
             <button
               type="button"
               onClick={toggleMute}
@@ -213,11 +280,20 @@ export function CustomAudioPlayer({
             <span className="text-xs w-8 text-right">
               {Math.round(getVolumePercentage())}%
             </span>
+
+            {/* Fullscreen Button */}
+            <button
+              type="button"
+              onClick={toggleFullscreen}
+              className="text-xs hover:text-green-300 transition-colors px-1"
+            >
+              ⛶
+            </button>
           </div>
         </div>
 
         {/* File Info */}
-        <div className="text-xs opacity-50 truncate">📁 {userPath}</div>
+        <div className="text-xs opacity-50 truncate">📁 {filePath}</div>
       </div>
     </div>
   );

@@ -27,7 +27,8 @@
         "useKeyWithClickEvents": "off",
         "useSemanticElements": "off",
         "useAriaPropsForRole": "off",
-        "useMediaCaption": "off"
+        "useMediaCaption": "off",
+        "noStaticElementInteractions": "off"
       },
       "nursery": {
         "useSortedClasses": "off",

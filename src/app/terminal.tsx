@@ -18,6 +18,7 @@ import {
   executeWhoamiCommand,
 } from '@/commands';
 import { CustomAudioPlayer } from '@/components/custom-audio-player';
+import { CustomVideoPlayer } from '@/components/custom-video-player';
 import { Input } from '@/components/ui/input';
 import { useFileSystem } from '@/hooks/use-file-system';
 import { useUsers } from '@/hooks/use-users';
@@ -412,13 +413,7 @@ export default function Component() {
               (line.extension === '.mp3' ? (
                 <CustomAudioPlayer src={line.content} />
               ) : (
-                <video
-                  controls
-                  src={line.content}
-                  className="my-2 w-full max-h-60"
-                >
-                  <track kind="captions" src="" label="No captions" />
-                </video>
+                <CustomVideoPlayer src={line.content} />
               ))}
             {line.type === 'command' && <span>{line.content}</span>}
           </div>

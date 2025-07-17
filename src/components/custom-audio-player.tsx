@@ -1,7 +1,6 @@
 'use client';
 
 import type React from 'react';
-
 import { useEffect, useRef, useState } from 'react';
 
 interface CustomAudioPlayerProps {
@@ -32,10 +31,11 @@ export function CustomAudioPlayer({
     };
     const handleLoadStart = () => setIsLoading(true);
     const handleCanPlay = () => setIsLoading(false);
+    const handleEnded = () => setIsPlaying(false);
 
     audio.addEventListener('timeupdate', updateTime);
     audio.addEventListener('loadedmetadata', updateDuration);
-    audio.addEventListener('ended', () => setIsPlaying(false));
+    audio.addEventListener('ended', handleEnded);
     audio.addEventListener('loadstart', handleLoadStart);
     audio.addEventListener('canplay', handleCanPlay);
 
@@ -45,7 +45,7 @@ export function CustomAudioPlayer({
     return () => {
       audio.removeEventListener('timeupdate', updateTime);
       audio.removeEventListener('loadedmetadata', updateDuration);
-      audio.removeEventListener('ended', () => setIsPlaying(false));
+      audio.removeEventListener('ended', handleEnded);
       audio.removeEventListener('loadstart', handleLoadStart);
       audio.removeEventListener('canplay', handleCanPlay);
     };
@@ -57,22 +57,46 @@ export function CustomAudioPlayer({
 
     if (isPlaying) {
       audio.pause();
+      setIsPlaying(false);
     } else {
-      audio.play().catch(console.error);
+      audio
+        .play()
+        .then(() => {
+          setIsPlaying(true);
+        })
+        .catch(console.error);
     }
-    setIsPlaying(!isPlaying);
   };
 
   const handleProgressClick = (e: React.MouseEvent<HTMLDivElement>) => {
     const audio = audioRef.current;
-    if (!audio || !duration) return;
+    if (!audio || !duration || isLoading) return;
 
     const rect = e.currentTarget.getBoundingClientRect();
     const clickX = e.clientX - rect.left;
     const newTime = (clickX / rect.width) * duration;
 
+    // Pause before seeking to prevent bugs
+    const wasPlaying = isPlaying;
+    if (wasPlaying) {
+      audio.pause();
+      setIsPlaying(false);
+    }
+
     audio.currentTime = newTime;
     setCurrentTime(newTime);
+
+    // Resume playing if it was playing before
+    if (wasPlaying) {
+      setTimeout(() => {
+        audio
+          .play()
+          .then(() => {
+            setIsPlaying(true);
+          })
+          .catch(console.error);
+      }, 100);
+    }
   };
 
   const handleVolumeClick = (e: React.MouseEvent<HTMLDivElement>) => {
@@ -125,8 +149,8 @@ export function CustomAudioPlayer({
     return '🔊';
   };
 
-  const stringPath = src.split('&').pop()?.split('=').pop() || 'audio.mp3';
-  const userPath = decodeURI(stringPath);
+  const filePath =
+    decodeURI(src).split('&').pop()?.split('%2F').pop() || 'audio.mp3';
 
   return (
     <div
@@ -149,11 +173,10 @@ export function CustomAudioPlayer({
         {/* Progress Bar */}
         <div className="space-y-1">
           <div
-            className="h-2 bg-gray-800 border border-green-600 cursor-pointer relative overflow-hidden w-full p-0"
+            className="h-2 bg-gray-800 border border-green-600 cursor-pointer relative overflow-hidden w-full"
             onClick={handleProgressClick}
             aria-label="Seek audio"
             tabIndex={0}
-            style={{ appearance: 'none' }}
             role="button"
           >
             <div
@@ -217,7 +240,7 @@ export function CustomAudioPlayer({
         </div>
 
         {/* File Info */}
-        <div className="text-xs opacity-50 truncate">📁 {userPath}</div>
+        <div className="text-xs opacity-50 truncate">📁 {filePath}</div>
       </div>
     </div>
   );
