@@ -1,8 +1,8 @@
 'use client';
 
+import { useEffect } from 'react';
 import PermissionRequestModal from '@/components/permissions-modal';
 import Terminal from './terminal';
-import { useEffect } from 'react';
 
 export default function Page() {
   useEffect(() => {
